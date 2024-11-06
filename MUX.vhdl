@@ -3,21 +3,30 @@ use ieee.std_logic_1164.all;
 
 entity MUX is
     port(
-        sel : in  std_logic_vector(1 downto 0);
-        d0  : in  std_logic;
-        d1  : in  std_logic;
-        d2  : in  std_logic;
-        d3  : in  std_logic;
-        y   : out std_logic
+        add_out : in std_logic_vector(15 downto 0);
+        sub_out : in std_logic_vector(15 downto 0);
+        inv_out : in std_logic_vector(15 downto 0);
+        xor_out : in std_logic_vector(15 downto 0);
+        sel  : in std_logic_vector(1 downto 0);
+        out_mux : out std_logic_vector(15 downto 0)
     );
 end entity MUX;
 
 architecture Behavioral of MUX is
 begin
-    with sel select
-        y <= d0 when "00",
-             d1 when "01",
-             d2 when "10",
-             d3 when "11",
-             '0' when others;
+    process(sel, add_out, sub_out, inv_out, xor_out)
+    begin
+        case sel is
+            when "00" =>
+                out_mux <= add_out;
+            when "01" =>
+                out_mux <= sub_out;
+            when "10" =>
+                out_mux <= inv_out;
+            when "11" =>
+                out_mux <= xor_out;
+            when others =>
+                out_mux <= (others => '0');
+        end case;
+    end process;
 end architecture Behavioral;

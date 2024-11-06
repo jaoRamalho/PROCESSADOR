@@ -6,7 +6,7 @@ entity ULA is
     port(
         a_in       : in  std_logic_vector(15 downto 0);
         b_in       : in  std_logic_vector(15 downto 0);
-        operation  : in  std_logic_vector(3 downto 0);
+        operation  : in  std_logic_vector(1 downto 0);
         out_ula    : out std_logic_vector(15 downto 0);
         Flag_zero  : out std_logic;
         Flag_Sinal : out std_logic
@@ -43,11 +43,20 @@ architecture Behavioral of ULA is
     component INVERSOR is
         port(
             a_in      : in  std_logic_vector(15 downto 0);
-            out_inv   : out std_logic_vector(15 downto 0);
-            flag_zero : out std_logic;
-            flag_sinal: out std_logic
+            out_inv   : out std_logic_vector(15 downto 0)
         );
     end component INVERSOR;
+
+    component MUX is
+        port(
+            add_out    : in  std_logic_vector(15 downto 0);
+            sub_out    : in  std_logic_vector(15 downto 0);
+            xor_out    : in  std_logic_vector(15 downto 0);
+            inv_out    : in  std_logic_vector(15 downto 0);
+            sel        : in  std_logic_vector(1 downto 0);
+            out_mux    : out std_logic_vector(15 downto 0)
+        );
+    end component MUX;
 
     -- Sinais internos
     signal add_out      : unsigned(15 downto 0);
@@ -84,33 +93,22 @@ begin
     INVERSOR_inst : INVERSOR
         port map (
             a_in      => a_in,
-            out_inv   => inv_out,
-            flag_zero => open,  -- Removemos a atribuição das flags aqui
-            flag_sinal=> open
+            out_inv   => inv_out
         );
 
-    -- Processo para selecionar a operação
-    process(operation, add_out, sub_out, xor_out, inv_out)
-    begin
-        case to_integer(unsigned(operation)) is
-            when 0 =>
-                selected_out <= std_logic_vector(add_out);
-            when 1 =>
-                selected_out <= std_logic_vector(sub_out);
-            when 2 =>
-                selected_out <= xor_out;
-            when 4 =>
-                selected_out <= inv_out;
-            when others =>
-                selected_out <= "0000000000000000";
-        end case;
-    end process;
+    MUX_inst : MUX
+        port map (
+            add_out => std_logic_vector(add_out),
+            sub_out => std_logic_vector(sub_out),
+            xor_out => xor_out,
+            inv_out => inv_out,
+            sel     => operation,
+            out_mux => selected_out
+        );
 
-    -- Atribuindo a saída selecionada à porta de saída
-    out_ula <= selected_out;
-
-    -- Definição das flags com base na saída selecionada
-    Flag_zero  <= '1' when selected_out = "0000000000000000" else '0';
+    -- Lógica de controle de flags
+    Flag_zero <= '1' when selected_out = "0000000000000000" else '0';
     Flag_Sinal <= selected_out(15);
 
+    out_ula <= selected_out;
 end architecture Behavioral;

@@ -1,0 +1,22 @@
+v 4
+file . "MUX.vhdl" "d68bacb9f78edef78a5d4434debfd8092a7cd9a5" "20241106220228.050":
+  entity mux at 1( 0) + 0 on 191;
+  architecture behavioral of mux at 15( 414) + 0 on 192;
+file . "ULA.vhdl" "b889d2f87313b6970f829d04b847d7efa95efeb9" "20241106220228.117":
+  entity ula at 1( 0) + 0 on 193;
+  architecture behavioral of ula at 16( 427) + 0 on 194;
+file . "INVERSOR.vhdl" "b09e9484e08b67616af925a0dfec1836ae6ef0ba" "20241106220227.923":
+  entity inversor at 1( 0) + 0 on 187;
+  architecture behavioral of inversor at 11( 213) + 0 on 188;
+file . "ADD.vhdl" "e810f6b79530cb81aaac64a374fc20a14068ce11" "20241106220227.808":
+  entity add at 1( 0) + 0 on 183;
+  architecture behavioral of add at 12( 220) + 0 on 184;
+file . "SUB.vhdl" "1313b0806ca0531207ce4ab7a2107d8b1eab80e7" "20241106220227.866":
+  entity sub at 1( 0) + 0 on 185;
+  architecture behavioral of sub at 12( 220) + 0 on 186;
+file . "Modulo_XOR.vhdl" "025b0f7fb32506c5a926704e4383292919467d30" "20241106220227.985":
+  entity modulo_xor at 1( 0) + 0 on 189;
+  architecture behavioral of modulo_xor at 12( 275) + 0 on 190;
+file . "ULA_Testbench.vhdl" "8629dd8926527abb033708f8341dad4b8cce971a" "20241106220228.184":
+  entity ula_testbench at 1( 0) + 0 on 195;
+  architecture behavior of ula_testbench at 8( 121) + 0 on 196;
