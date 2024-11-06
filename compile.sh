@@ -1,20 +1,22 @@
 #!/bin/bash
 
-# Analisar todos os arquivos VHDL
-ghdl -a --std=08 ADD.vhdl
-ghdl -a --std=08 SUB.vhdl
-ghdl -a --std=08 INVERSOR.vhdl
-ghdl -a --std=08 Modulo_XOR.vhdl
-ghdl -a --std=08 MUX.vhdl
-ghdl -a --std=08 ULA.vhdl
-ghdl -a --std=08 ULA_Testbench.vhdl
+# Criar o diretório de build se não existir
+mkdir -p build
 
+# Analisar todos os arquivos VHDL e especificar o diretório de trabalho
+ghdl -a --std=08 --workdir=build Operations/ADD.vhdl
+ghdl -a --std=08 --workdir=build Operations/SUB.vhdl
+ghdl -a --std=08 --workdir=build Operations/INVERSOR.vhdl
+ghdl -a --std=08 --workdir=build Operations/Modulo_XOR.vhdl
+ghdl -a --std=08 --workdir=build MUX.vhdl
+ghdl -a --std=08 --workdir=build ULA.vhdl
+ghdl -a --std=08 --workdir=build ULA_Testbench.vhdl
 
-# Elaborar o testbench
-ghdl -e --std=08 ULA_Testbench
+# Elaborar o testbench e especificar o diretório de trabalho
+ghdl -e --std=08 --workdir=build ULA_Testbench
 
 # Executar a simulação e gerar um arquivo de forma de onda
-ghdl -r --std=08 ULA_Testbench --wave=ula.ghw
+ghdl -r --std=08 --workdir=build ULA_Testbench --wave=ula.ghw
 
 # Verificar se a simulação foi bem-sucedida
 if [ $? -ne 0 ]; then

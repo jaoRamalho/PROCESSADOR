@@ -15,7 +15,8 @@ end entity ULA;
 
 architecture Behavioral of ULA is
 
-    -- Declaração dos componentes
+    ---------------- Declaração dos componentes -------------------------
+    
     component ADD is
         port(
             a_in   : in  unsigned(15 downto 0);
@@ -57,14 +58,18 @@ architecture Behavioral of ULA is
             out_mux    : out std_logic_vector(15 downto 0)
         );
     end component MUX;
+    ---------------------------------------------------------------------------------------
+    
+    ----------- Sinais internos -----------------------------------------------------------
 
-    -- Sinais internos
     signal add_out      : unsigned(15 downto 0);
     signal sub_out      : unsigned(15 downto 0);
     signal xor_out      : std_logic_vector(15 downto 0);
     signal inv_out      : std_logic_vector(15 downto 0);
     signal selected_out : std_logic_vector(15 downto 0);
 
+    ---------------------------------------------------------------------------------------
+    
 begin
 
     -- Instanciação dos componentes

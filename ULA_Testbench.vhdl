@@ -54,28 +54,55 @@ begin
         -- Add stimulus here
         a_in <= "0000000000000001";
         b_in <= "0000000000000010";
-        operation <= "00"; -- Example operation code
+        operation <= "00"; -- Example operation code -> ADD
 
         wait for 100 ns;
 
         -- Add more stimulus as needed
         a_in <= "0000000000000101";
         b_in <= "0000000000000100";
-        operation <= "01"; -- Example operation code
+        operation <= "01"; -- Example operation code -> SUB
 
         wait for 100 ns;
 
+        a_in <= "0000000000000010";
+        operation <= "10"; -- Example operation code -> INV
+        
+        wait for 100 ns;
+        
         a_in <= "0000000000000011";
-        b_in <= "0000000000000010";
-        operation <= "10"; -- Example operation code
-
-        wait for 100 ns;
-
-        a_in <= "0000000000000111";
         b_in <= "0000000000000110";
-        operation <= "11"; -- Example operation code
+        operation <= "11"; -- Example operation code -> XOR
 
         wait for 100 ns;
+
+        -- ADD operation with negative numbers
+        a_in <= "1111111111111111"; -- -1 em complemento de dois
+        b_in <= "1111111111111110"; -- -2 em complemento de dois
+        operation <= "00"; -- Código de operação para ADD
+
+        wait for 100 ns;
+
+        -- SUB operation with negative numbers
+        a_in <= "1111111111111101"; -- -3 em complemento de dois
+        b_in <= "1111111111111100"; -- -4 em complemento de dois
+        operation <= "01"; -- Código de operação para SUB
+
+        wait for 100 ns;
+
+        -- XOR operation with negative numbers
+        a_in <= "1111111111111011"; -- -5 em complemento de dois
+            operation <= "10"; -- Código de operação para INV
+            
+        wait for 100 ns;
+            
+        -- INV operation with negative number
+        a_in <= "1111111111111001"; -- -7 em complemento de dois
+        b_in <= "1111111111111010"; -- -6 em complemento de dois
+        operation <= "11"; -- Código de operação para XOR
+
+        wait for 100 ns;
+
 
         -- End simulation
         wait;
