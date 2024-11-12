@@ -4,12 +4,12 @@
 mkdir -p build
 
 # Analisar todos os arquivos VHDL e especificar o diretório de trabalho
-ghdl -a --std=08 --workdir=build Operations/ADD.vhdl
-ghdl -a --std=08 --workdir=build Operations/SUB.vhdl
-ghdl -a --std=08 --workdir=build Operations/INVERSOR.vhdl
-ghdl -a --std=08 --workdir=build Operations/Modulo_XOR.vhdl
-ghdl -a --std=08 --workdir=build MUX.vhdl
-ghdl -a --std=08 --workdir=build ULA.vhdl
+ghdl -a --std=08 --workdir=build ULA/Operations/ADD.vhdl
+ghdl -a --std=08 --workdir=build ULA/Operations/SUB.vhdl
+ghdl -a --std=08 --workdir=build ULA/Operations/INVERSOR.vhdl
+ghdl -a --std=08 --workdir=build ULA/Operations/Modulo_XOR.vhdl
+ghdl -a --std=08 --workdir=build ULA/MUX.vhdl
+ghdl -a --std=08 --workdir=build ULA/ULA.vhdl
 ghdl -a --std=08 --workdir=build ULA_Testbench.vhdl
 
 # Elaborar o testbench e especificar o diretório de trabalho
