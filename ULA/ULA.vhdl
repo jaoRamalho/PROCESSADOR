@@ -9,9 +9,7 @@ entity ULA is
         operation  : in  std_logic_vector(1 downto 0);
         out_ula    : out std_logic_vector(15 downto 0);
         Flag_zero  : out std_logic;
-        Flag_Sinal : out std_logic;
-        clk        : in  std_logic
-        
+        Flag_Sinal : out std_logic        
     );
 end entity ULA;
 

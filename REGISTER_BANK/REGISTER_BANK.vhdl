@@ -8,6 +8,7 @@ entity REGISTER_BANK is
         rst             : in  std_logic;                           -- Reset
         write_en        : in  std_logic;                           -- Sinal de habilitação de escrita
         read_en         : in  std_logic;                           -- Sinal de habilitação de leitura
+        read_en_acc     : in  std_logic;                           -- Sinal de habilitação de leitura do acumulador
         write_en_acc    : in  std_logic;                           -- Sinal de habilitação de escrita no acumulador
         address         : in  std_logic_vector(2 downto 0);        -- Endereço de 3 bits para selecionar um dos 8 registradores
         data_in         : in  std_logic_vector(15 downto 0);       -- Dados de entrada (para escrita)
@@ -25,7 +26,6 @@ architecture Behavioral of REGISTER_BANK is
     signal accumulator : std_logic_vector(15 downto 0) := (others => '0'); -- Acumulador para operações de leitura e escrita
 
 begin
-
     process(clk)
     begin
         if rising_edge(clk) then
@@ -35,17 +35,21 @@ begin
             elsif write_en = '1' then
                 -- Escrita: grava em um registrador específico quando habilitado
                 registers(to_integer(unsigned(address))) <= data_in;
+            elsif write_en_acc = '1' then
+                -- Escrita no acumulador
+                accumulator <= data_in;
             end if;
         end if;
     end process;
 
-    -- Leitura dos dados
-    process(read_en, registers, address)
+    process(read_en, address, read_en_acc)
     begin
         if read_en = '1' then
-            data_out <= registers(to_integer(unsigned(address))); -- Leitura do registrador selecionado
-        else
-            data_out <= (others => 'Z'); -- Saída em alta impedância se não houver leitura
+            -- Leitura: lê o conteúdo de um registrador específico quando habilitado
+            data_out <= registers(to_integer(unsigned(address)));
+        elsif read_en_acc = '1' then
+            -- Leitura do acumulador
+            accumulator_out <= accumulator;
         end if;
     end process;
 
