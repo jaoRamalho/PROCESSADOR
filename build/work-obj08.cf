@@ -1,28 +1,28 @@
 v 4
-file "C:\projeto\processador\PROCESSADOR\" "Processador_Testbench.vhdl" "d71b0aceda5903c7a2c1b959949a6ff774081770" "20241112232134.710":
-  entity processador_testbench at 1( 0) + 0 on 63;
-  architecture behavior of processador_testbench at 8( 137) + 0 on 64;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/ACCUMULATOR.vhdl" "f48f2dc9b8cc699ba3906e7e39c4e3177f95984b" "20241112232134.528":
-  entity accumulator at 1( 0) + 0 on 57;
-  architecture behavioral of accumulator at 17( 392) + 0 on 58;
-file "C:\projeto\processador\PROCESSADOR\" "ULA_Testbench.vhdl" "a67b351c9313a9a557298a08c75ac392e7c525bf" "20241112205545.342":
-  entity ula_testbench at 1( 0) + 0 on 37;
-  architecture behavior of ula_testbench at 8( 121) + 0 on 38;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/INVERSOR.vhdl" "b09e9484e08b67616af925a0dfec1836ae6ef0ba" "20241112232134.325":
-  entity inversor at 1( 0) + 0 on 51;
-  architecture behavioral of inversor at 11( 213) + 0 on 52;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/ADD.vhdl" "e810f6b79530cb81aaac64a374fc20a14068ce11" "20241112232134.261":
-  entity add at 1( 0) + 0 on 49;
-  architecture behavioral of add at 12( 220) + 0 on 50;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/SUB.vhdl" "1313b0806ca0531207ce4ab7a2107d8b1eab80e7" "20241112232134.454":
-  entity sub at 1( 0) + 0 on 55;
-  architecture behavioral of sub at 12( 220) + 0 on 56;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/Modulo_XOR.vhdl" "025b0f7fb32506c5a926704e4383292919467d30" "20241112232134.388":
-  entity modulo_xor at 1( 0) + 0 on 53;
-  architecture behavioral of modulo_xor at 12( 275) + 0 on 54;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/ULA.vhdl" "2c6fbb302488a56f94914a8bc112a8d18cdda4ef" "20241112232134.665":
-  entity ula at 1( 0) + 0 on 61;
-  architecture behavioral of ula at 16( 435) + 0 on 62;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/MUX.vhdl" "d68bacb9f78edef78a5d4434debfd8092a7cd9a5" "20241112232134.593":
-  entity mux at 1( 0) + 0 on 59;
-  architecture behavioral of mux at 15( 414) + 0 on 60;
+file "C:\projeto\processador\PROCESSADOR\" "REGISTERS/REGISTER_FILE.vhdl" "13a0a0a980a5533fe4416ba54309d761c40bb7ab" "20241113225319.565":
+  entity register_file at 1( 0) + 0 on 395;
+  architecture behavioral of register_file at 17( 720) + 0 on 396;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/MUX.vhdl" "d68bacb9f78edef78a5d4434debfd8092a7cd9a5" "20241113225319.357":
+  entity mux at 1( 0) + 0 on 389;
+  architecture behavioral of mux at 15( 414) + 0 on 390;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/SUB.vhdl" "1313b0806ca0531207ce4ab7a2107d8b1eab80e7" "20241113225319.212":
+  entity sub at 1( 0) + 0 on 385;
+  architecture behavioral of sub at 12( 220) + 0 on 386;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/INVERSOR.vhdl" "b09e9484e08b67616af925a0dfec1836ae6ef0ba" "20241113225319.060":
+  entity inversor at 1( 0) + 0 on 381;
+  architecture behavioral of inversor at 11( 213) + 0 on 382;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/ADD.vhdl" "e810f6b79530cb81aaac64a374fc20a14068ce11" "20241113225318.990":
+  entity add at 1( 0) + 0 on 379;
+  architecture behavioral of add at 12( 220) + 0 on 380;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/Modulo_XOR.vhdl" "025b0f7fb32506c5a926704e4383292919467d30" "20241113225319.130":
+  entity modulo_xor at 1( 0) + 0 on 383;
+  architecture behavioral of modulo_xor at 12( 275) + 0 on 384;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/ACCUMULATOR.vhdl" "f48f2dc9b8cc699ba3906e7e39c4e3177f95984b" "20241113225319.293":
+  entity accumulator at 1( 0) + 0 on 387;
+  architecture behavioral of accumulator at 17( 392) + 0 on 388;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/ULA.vhdl" "2c6fbb302488a56f94914a8bc112a8d18cdda4ef" "20241113225319.424":
+  entity ula at 1( 0) + 0 on 391;
+  architecture behavioral of ula at 16( 435) + 0 on 392;
+file "C:\projeto\processador\PROCESSADOR\" "Processador_Testbench.vhdl" "c498038a19683fb91c5e6eed5a65f160f56fac60" "20241113225319.645":
+  entity processador_testbench at 1( 0) + 0 on 397;
+  architecture behavior of processador_testbench at 8( 137) + 0 on 398;
