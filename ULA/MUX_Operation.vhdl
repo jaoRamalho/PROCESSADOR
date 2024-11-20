@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity MUX is
+entity MUX_Operation is
     port(
         add_out : in std_logic_vector(15 downto 0);
         sub_out : in std_logic_vector(15 downto 0);
@@ -10,9 +10,9 @@ entity MUX is
         sel  : in std_logic_vector(1 downto 0);
         out_mux : out std_logic_vector(15 downto 0)
     );
-end entity MUX;
+end entity MUX_Operation;
 
-architecture Behavioral of MUX is
+architecture Behavioral of MUX_Operation is
 begin
     process(sel, add_out, sub_out, inv_out, xor_out)
     begin

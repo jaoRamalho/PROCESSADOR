@@ -20,7 +20,7 @@ begin
         
     process(clk)
     begin
-        if rising_edge(clk) then
+        if falling_edge(clk) then
             if rst = '1' then
                 acc <= (others => '0');  --- reseta o acumulador
             elsif write_en_acc = '1' then

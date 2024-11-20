@@ -22,6 +22,8 @@ for file in REGISTERS/*.vhdl; do
     ghdl -a --std=08 --workdir=build "$file"
 done
 
+ghdl -a --std=08 --workdir=build Processador.vhdl
+
 # Analisar o arquivo Processador_Testbench.vhdl
 ghdl -a --std=08 --workdir=build Processador_Testbench.vhdl
 
