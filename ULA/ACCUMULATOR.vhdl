@@ -8,19 +8,19 @@ entity ACCUMULATOR is
         clk             : in std_logic;
         rst             : in std_logic;
         write_en_acc    : in std_logic;
-        data_in_acc     : in std_logic_vector(15 downto 0);
-        out_acc         : out std_logic_vector(15 downto 0)
+        data_in_acc     : in unsigned(15 downto 0);
+        out_acc         : out unsigned(15 downto 0)
     );
 end entity ACCUMULATOR;
 
 
 architecture Behavioral of ACCUMULATOR is
-    signal acc : std_logic_vector(15 downto 0) := (others => '0');
+    signal acc : unsigned(15 downto 0) := (others => '0');
 begin
         
     process(clk)
     begin
-        if falling_edge(clk) then
+        if rising_edge(clk) then
             if rst = '1' then
                 acc <= (others => '0');  --- reseta o acumulador
             elsif write_en_acc = '1' then

@@ -3,6 +3,7 @@
 # Criar o diretório de build se não existir
 mkdir -p build
 
+
 # Analisar todos os arquivos VHDL no diretório ULA/Operations
 for file in ULA/Operations/*.vhdl; do
     ghdl -a --std=08 --workdir=build "$file"
@@ -17,10 +18,16 @@ for file in REGISTERS/*.vhdl; do
     ghdl -a --std=08 --workdir=build "$file"
 done
 
-
-for file in REGISTERS/*.vhdl; do
+for file in ROMs/*.vhdl; do
     ghdl -a --std=08 --workdir=build "$file"
 done
+
+
+ghdl -a --std=08 --workdir=build PC.vhdl
+
+ghdl -a --std=08 --workdir=build Control_Unit.vhdl
+
+ghdl -a --std=08 --workdir=build State_Machine.vhdl
 
 ghdl -a --std=08 --workdir=build Processador.vhdl
 
@@ -29,6 +36,7 @@ ghdl -a --std=08 --workdir=build Processador_Testbench.vhdl
 
 # Elaborar o testbench e especificar o diretório de trabalho
 ghdl -e --std=08 --workdir=build Processador_Testbench
+
 
 # Mensagem de depuração antes de executar a simulação
 echo "Executando a simulação..."

@@ -2,159 +2,102 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
---- NÃO ESTÁ PRONTO, TEM APENAS O O CORPO PARA O CONTROL UNIT ---
--- FALTA ADICIONAR MAIS SINAIS DE CONTROLE (PROVAVELMENTE) E ADICIONAR AS INSTRUÇÕES RESTANTES
--- MAQUINA DE ESTADOS ESTÁ PRATICAMENTE PRONTA, INCREMENTADOR NO PC TBM
 
 
-
----- Formato das instrucoes -----------------
--- 0000 0 000 
--- Primeiros 4 bits (16:13): opcode
--- Proximos 1 bit(12): dado antigo da ula (0) ou constante (1)
--- Proximos 3 bits(11:9): registrador de saida
-
---- Provavelmente diminuir o numero de bits de sinais
-
-
+-- Formato de bits: [ [OPCODE(4B)], [FUNCTION()] ]
 
 
 entity Control_Unit is
     port(
-        clk         : in std_logic;
-        reset       : in  std_logic;
-        instruction : in std_logic_vector(16 downto 0);
+        clk             : in  std_logic;
+        reset           : in  std_logic;
+        instruction     : in  unsigned(3 downto 0); -- Instrução de 7 bits
 
-        ---- sinais de controle ----
-        mem_read       : out std_logic;
-        pc_inc         : out std_logic;
-        
-        mux_const_addi : out std_logic;
-        mux_control_acc: out std_logic;
-        write_en_acc   : out std_logic;
-
-        ula_op         : out std_logic_vector(1 downto 0);
-        ula_enable     : out std_logic;
-        
-        reg_write      : out std_logic;
-        write_reg      : out std_logic_vector(2 downto 0);
-        read_reg       : out std_logic_vector(2 downto 0)
-
-        --- Talvez add mais sinais de controle ---
+        -- Sinais de controle
+        pc_inc          : out std_logic;
+        write_ir        : out std_logic;
+        mux_const_addi  : out std_logic;
+        ula_op          : out unsigned(1 downto 0)
     );
 end entity Control_Unit;
 
-
 architecture Behavioral of Control_Unit is
-    type state_type is (IDLE, FETCH, DECODE, EXECUTE);
-    signal current_state, next_state : state_type;
 
-    signal opcode : std_logic_vector(3 downto 0);
 
-    -- Opcode Definitions
-    constant ADD   : std_logic_vector(3 downto 0) := "0001";
-    constant ADDI  : std_logic_vector(3 downto 0) := "0010";
-    constant SUB   : std_logic_vector(3 downto 0) := "0011";
-    constant SUBB  : std_logic_vector(3 downto 0) := "0100";
-    constant LD    : std_logic_vector(3 downto 0) := "0101";
-    constant BGT   : std_logic_vector(3 downto 0) := "0110";
-    constant BVC   : std_logic_vector(3 downto 0) := "0111";
-    constant CJNE  : std_logic_vector(3 downto 0) := "1000";
-    constant JMP   : std_logic_vector(3 downto 0) := "1001";
+    -- Sinais internos para decodificação
+    signal state     : unsigned(1 downto 0)  := "00" ;          -- Bits 1 downto 0
+    signal opcode     : unsigned(3 downto 0) := "0000";          -- Bits 16 downto 13
+
+    -- Definição dos opcodes
+    constant NOP        : unsigned(3 downto 0) := "0000";   -- FAZ MERDA NENHUMA
+    constant LDA        : unsigned(3 downto 0) := "0001";   -- CARREGA UM VALOR NO ACUMULADOR
+    constant STA        : unsigned(3 downto 0) := "0010";   -- ARMAZENA O VALOR DO ACUMULADOR EM UM REGISTRADOR
+    constant ADD        : unsigned(3 downto 0) := "0011";   -- SOMA O VALOR DO ACUMULADOR COM O VALOR DE UM REGISTRADOR
+    constant SUB        : unsigned(3 downto 0) := "0100";   -- SUBTRAI O VALOR DO ACUMULADOR PELO VALOR DE UM REGISTRADOR
+    constant INV        : unsigned(3 downto 0) := "0101";   -- INVERTE O VALOR DE UM REGISTRADOR
+    constant OP_XOR     : unsigned(3 downto 0) := "0110";   -- FAZ XOR DO VALOR DO ACUMULADOR COM O VALOR DE UM REGISTRADOR
+    constant SUBB       : unsigned(3 downto 0) := "0111";   -- SUBTRACAO DIFERENTE
+    constant LD         : unsigned(3 downto 0) := "1000";   -- CARREGA UM VALOR EM UM REGISTRADOR
+    constant LW         : unsigned(3 downto 0) := "1001";   -- CARREGA UM VALOR NA MEMORIA
+    constant JMP        : unsigned(3 downto 0) := "1010";   -- JUMP
+    constant ADDI       : unsigned(3 downto 0) := "1011";   -- SOMA UM VALOR CONSTANTE AO ACUMULADOR
+    constant WR         : unsigned(3 downto 0) := "1100";   -- ESCREVE EM UM REGISTRADOR O VALOR DO ACUMULADOR
+    constant WRI        : unsigned(3 downto 0) := "1101";   -- ESCREVE NA MEMORIA O VALOR DE UMA CONSTANTE
+    constant SUBI       : unsigned(3 downto 0) := "1110";   -- SUBTRAI UM VALOR CONSTANTE DO ACUMULADOR
+
+    -- DECLARANDO MAQUINA DE ESTADOS
+    component State_Machine is 
+        port(
+            clk : in std_logic;
+            rst : in std_logic;
+            state : out unsigned(1 downto 0)
+        );
+    end component;
 
 begin
+    sM : State_Machine port map(
+        clk => clk,
+        rst => reset,
+        state => state
+    );
 
-    ---------- Logic for State Machine ---------------
+
     process(clk, reset)
     begin
-        if reset = '1' then
-            current_state <= IDLE;
-        elsif rising_edge(clk) then
-            current_state <= next_state;
-        end if;
-    end process;
-    -----------------------------------------------------
-
-
-    process(current_state, instruction)
-    begin
-        next_state  <= current_state;
-
-        case current_state is
-            when IDLE =>
-                if enable = '1' then
-                    next_state <= FETCH;
-                end if;
-
-            when FETCH =>
-                -- Fetch Instruction from ROM
-                mem_read   <= '1';  -- mem_read
-                pc_inc     <= '1';  -- pc_inc
-                next_state <= DECODE;
-
-            when DECODE =>
-                -- Decode Opcode
-                case instruction(16 downto 13) is
-                    when ADD  =>
-                        next_state <= EXECUTE;
-                    when ADDI =>
-                        next_state <= EXECUTE;
-                    when SUB  =>
-                        next_state <= EXECUTE;
-                    when SUBB =>
-                        next_state <= EXECUTE;
-                    when LD   =>
-                        next_state <= EXECUTE;
-                    when BGT  =>
-                        next_state <= EXECUTE;
-                    when BVC  =>
-                        next_state <= EXECUTE;
-                    when CJNE =>
-                        next_state <= EXECUTE;
-                    when JMP  =>
-                        next_state <= EXECUTE;
-                    when others =>
-                        next_state <= IDLE;
-                end case;
-
+        if state = "00" then
+            pc_inc <= '1';
+        
+        elsif state = "01" then
+            pc_inc <= '0';
+            opcode <= instruction;
             
-                when EXECUTE =>
-                case instruction(16 downto 13) is
-                    when ADD =>
-                        ula_enable <= '1';
-                        ula_op <= "00";
-                        mux_const_addi <= '0';
+            case opcode is
+                when ADD =>
+                    mux_const_addi <= '0';
+                    ula_op <= "00";
+                when SUB =>
+                    mux_const_addi <= '0';
+                    ula_op <= "01";
+                when ADDI =>
+                    mux_const_addi <= '1';
+                    ula_op <= "00";
+                
+                when WRI =>
+                    write_ir <= '1';
+                
 
-                    when ADDI =>
-                        ula_enable <= '1';
-                        ula_op <= "00";
-                        mux_const_addi <= '1';
+                when others =>
+                    pc_inc <= '0';
+                    write_ir <= '0';
+                    mux_const_addi <= '0';
+            end case;
 
-                    when SUB =>
-                        ula_enable <= '1';
-                        ula_op <= "01";
-
-                    when SUBB =>
-                        --- Mudar para adiconar o carry ---
-                        ula_enable <= '1';
-                        ula_op <= "11";
-
-                    when LD =>
-
-                    when BGT =>
-
-                    when BVC =>
-
-                    when CJNE =>
-
-                    when JMP =>
-
-                    when others =>
-                        ula_enable <= '0';
-                    
-                end case;
-
-            when others =>
-                next_state <= IDLE;
-        end case;
+        elsif state = "10" then
+            pc_inc <= '0';
+            write_ir <= '0';
+            mux_const_addi <= '0';
+        end if;
+    
     end process;
+
+end architecture Behavioral;

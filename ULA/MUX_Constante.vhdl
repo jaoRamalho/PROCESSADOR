@@ -5,10 +5,10 @@ use ieee.numeric_std.all;
 
 entity MUX_Constante is
     port(
-        constante : in  std_logic_vector(15 downto 0);
-        out_register : in  std_logic_vector(15 downto 0);  
+        constante : in  unsigned(15 downto 0);
+        out_register : in  unsigned(15 downto 0);  
         sel       : in  std_logic;
-        out_mux   : out std_logic_vector(15 downto 0)
+        out_mux   : out unsigned(15 downto 0)
     );
 end entity MUX_Constante;
 

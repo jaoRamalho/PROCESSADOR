@@ -1,31 +1,49 @@
 v 4
-file "C:\projeto\processador\PROCESSADOR\" "Processador.vhdl" "af30cd9a5d331fad3a9c61636b70a6cbb68664b0" "20241120203607.609":
-  entity processador at 1( 0) + 0 on 145;
-  architecture behavior of processador at 24( 1344) + 0 on 146;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/ULA.vhdl" "2c6fbb302488a56f94914a8bc112a8d18cdda4ef" "20241120203607.402":
-  entity ula at 1( 0) + 0 on 139;
-  architecture behavioral of ula at 16( 435) + 0 on 140;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/ACCUMULATOR.vhdl" "f48f2dc9b8cc699ba3906e7e39c4e3177f95984b" "20241120203607.243":
-  entity accumulator at 1( 0) + 0 on 135;
-  architecture behavioral of accumulator at 17( 392) + 0 on 136;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/Modulo_XOR.vhdl" "025b0f7fb32506c5a926704e4383292919467d30" "20241120203607.109":
-  entity modulo_xor at 1( 0) + 0 on 131;
-  architecture behavioral of modulo_xor at 12( 275) + 0 on 132;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/ADD.vhdl" "e810f6b79530cb81aaac64a374fc20a14068ce11" "20241120203606.997":
-  entity add at 1( 0) + 0 on 127;
-  architecture behavioral of add at 12( 220) + 0 on 128;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/INVERSOR.vhdl" "b09e9484e08b67616af925a0dfec1836ae6ef0ba" "20241120203607.047":
-  entity inversor at 1( 0) + 0 on 129;
-  architecture behavioral of inversor at 11( 213) + 0 on 130;
-file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/SUB.vhdl" "1313b0806ca0531207ce4ab7a2107d8b1eab80e7" "20241120203607.178":
-  entity sub at 1( 0) + 0 on 133;
-  architecture behavioral of sub at 12( 220) + 0 on 134;
+file "C:\projeto\processador\PROCESSADOR\" "Control_Unit.vhdl" "27bd7a7dff189be186312b072c4e19dcc1afe077" "20241128011918.450":
+  entity control_unit at 1( 0) + 0 on 1219;
+  architecture behavioral of control_unit at 24( 578) + 0 on 1220;
+file "C:\projeto\processador\PROCESSADOR\" "ROMs/ROM.vhdl" "fd1ed872074c73c5ead2a4d05a2ebdfda1f27e20" "20241128011918.301":
+  entity rom at 1( 0) + 0 on 1215;
+  architecture a_rom of rom at 34( 2023) + 0 on 1216;
+file "C:\projeto\processador\PROCESSADOR\" "State_Machine.vhdl" "bd193b6e64d24c56e133fa522f47063052d6901e" "20241128011918.522":
+  entity state_machine at 1( 0) + 0 on 1221;
+  architecture a_state_machine of state_machine at 13( 237) + 0 on 1222;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/MUX_Operation.vhdl" "a4d2ab7f949057d59169b7a0538208955d5d6103" "20241128011918.115":
+  entity mux_operation at 1( 0) + 0 on 1209;
+  architecture behavioral of mux_operation at 16( 413) + 0 on 1210;
+file "C:\projeto\processador\PROCESSADOR\" "Processador_Testbench.vhdl" "21a2e27cca2a899ebe1d7c7ffb3e28b987b1f5da" "20241128011918.645":
+  entity processador_testbench at 1( 0) + 0 on 1225;
+  architecture behavior of processador_testbench at 8( 122) + 0 on 1226;
+file "C:\projeto\processador\PROCESSADOR\" "REGISTERS/REGISTER_FILE.vhdl" "39ac50a11d5f2e9325f631f097d779460f0d58d5" "20241128011918.240":
+  entity register_file at 1( 0) + 0 on 1213;
+  architecture behavioral of register_file at 16( 592) + 0 on 1214;
 file "C:\projeto\processador\PROCESSADOR\" "ULA/MUX.vhdl" "d68bacb9f78edef78a5d4434debfd8092a7cd9a5" "20241120203607.314":
   entity mux at 1( 0) + 0 on 137;
   architecture behavioral of mux at 15( 414) + 0 on 138;
-file "C:\projeto\processador\PROCESSADOR\" "REGISTERS/REGISTER_FILE.vhdl" "13a0a0a980a5533fe4416ba54309d761c40bb7ab" "20241120203607.536":
-  entity register_file at 1( 0) + 0 on 143;
-  architecture behavioral of register_file at 17( 720) + 0 on 144;
-file "C:\projeto\processador\PROCESSADOR\" "Processador_Testbench.vhdl" "707052b1b8396b64200cc3a70882c5fb438f69df" "20241120203607.661":
-  entity processador_testbench at 1( 0) + 0 on 147;
-  architecture behavior of processador_testbench at 8( 137) + 0 on 148;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/SUB.vhdl" "1313b0806ca0531207ce4ab7a2107d8b1eab80e7" "20241128011917.925":
+  entity sub at 1( 0) + 0 on 1203;
+  architecture behavioral of sub at 12( 220) + 0 on 1204;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/INVERSOR.vhdl" "75282cf15d3b96b501190444316d2d6fa14f2cb6" "20241128011917.801":
+  entity inversor at 1( 0) + 0 on 1199;
+  architecture behavioral of inversor at 12( 224) + 0 on 1200;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/ADD.vhdl" "e810f6b79530cb81aaac64a374fc20a14068ce11" "20241128011917.746":
+  entity add at 1( 0) + 0 on 1197;
+  architecture behavioral of add at 12( 220) + 0 on 1198;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/Operations/Modulo_XOR.vhdl" "297d79cb270c56c620c6da64c14b6337c2b33c68" "20241128011917.864":
+  entity modulo_xor at 1( 0) + 0 on 1201;
+  architecture behavioral of modulo_xor at 13( 278) + 0 on 1202;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/ACCUMULATOR.vhdl" "1efea32b4c89d1a7ec38441f5d96b29ad9aaf658" "20241128011917.991":
+  entity accumulator at 1( 0) + 0 on 1205;
+  architecture behavioral of accumulator at 17( 376) + 0 on 1206;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/ULA.vhdl" "af80a660382cd7dcf38014681ab5354028fb0160" "20241128011918.179":
+  entity ula at 1( 0) + 0 on 1211;
+  architecture behavioral of ula at 16( 403) + 0 on 1212;
+file "C:\projeto\processador\PROCESSADOR\" "Processador.vhdl" "3ae032cbdddf8f41a0e49f811e431b36c71fc0b6" "20241128011918.583":
+  entity processador at 1( 0) + 0 on 1223;
+  architecture behavior of processador at 12( 282) + 0 on 1224;
+file "C:\projeto\processador\PROCESSADOR\" "ULA/MUX_Constante.vhdl" "e7af352482fc1e0a735a9286735362f1b837ffec" "20241128011918.056":
+  entity mux_constante at 1( 0) + 0 on 1207;
+  architecture behavioral of mux_constante at 16( 335) + 0 on 1208;
+file "C:\projeto\processador\PROCESSADOR\" "PC.vhdl" "809e32dcf993fbc50966356c914836d920949aa6" "20241128011918.382":
+  entity pc at 1( 0) + 0 on 1217;
+  architecture behavioral of pc at 14( 272) + 0 on 1218;

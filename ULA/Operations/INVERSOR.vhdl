@@ -1,10 +1,11 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity INVERSOR is
     port(
-        a_in : in std_logic_vector(15 downto 0);
-        out_inv : out std_logic_vector(15 downto 0)
+        a_in : in unsigned(15 downto 0);
+        out_inv : out unsigned(15 downto 0)
     );
 end entity INVERSOR;
 

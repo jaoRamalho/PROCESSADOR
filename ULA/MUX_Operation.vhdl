@@ -1,14 +1,15 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity MUX_Operation is
     port(
-        add_out : in std_logic_vector(15 downto 0);
-        sub_out : in std_logic_vector(15 downto 0);
-        inv_out : in std_logic_vector(15 downto 0);
-        xor_out : in std_logic_vector(15 downto 0);
-        sel  : in std_logic_vector(1 downto 0);
-        out_mux : out std_logic_vector(15 downto 0)
+        add_out : in unsigned(15 downto 0);
+        sub_out : in unsigned(15 downto 0);
+        inv_out : in unsigned(15 downto 0);
+        xor_out : in unsigned(15 downto 0);
+        sel  : in unsigned(1 downto 0);
+        out_mux : out unsigned(15 downto 0)
     );
 end entity MUX_Operation;
 

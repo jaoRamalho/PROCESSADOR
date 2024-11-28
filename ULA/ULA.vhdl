@@ -4,10 +4,10 @@ use ieee.numeric_std.all;
 
 entity ULA is
     port(
-        a_in       : in  std_logic_vector(15 downto 0);
-        b_in       : in  std_logic_vector(15 downto 0);
-        operation  : in  std_logic_vector(1 downto 0);
-        out_ula    : out std_logic_vector(15 downto 0);
+        a_in       : in  unsigned(15 downto 0);
+        b_in       : in  unsigned(15 downto 0);
+        operation  : in  unsigned(1 downto 0);
+        out_ula    : out unsigned(15 downto 0);
         Flag_zero  : out std_logic;
         Flag_Sinal : out std_logic        
     );
@@ -35,38 +35,38 @@ architecture Behavioral of ULA is
 
     component Modulo_XOR is
         port(
-            xor1    : in  std_logic_vector(15 downto 0);
-            xor2    : in  std_logic_vector(15 downto 0);
-            out_xor : out std_logic_vector(15 downto 0)
+            xor1    : in  unsigned(15 downto 0);
+            xor2    : in  unsigned(15 downto 0);
+            out_xor : out unsigned(15 downto 0)
         );
     end component Modulo_XOR;
 
     component INVERSOR is
         port(
-            a_in      : in  std_logic_vector(15 downto 0);
-            out_inv   : out std_logic_vector(15 downto 0)
+            a_in      : in  unsigned(15 downto 0);
+            out_inv   : out unsigned(15 downto 0)
         );
     end component INVERSOR;
 
-    component MUX is
+    component MUX_Operation is
         port(
-            add_out    : in  std_logic_vector(15 downto 0);
-            sub_out    : in  std_logic_vector(15 downto 0);
-            xor_out    : in  std_logic_vector(15 downto 0);
-            inv_out    : in  std_logic_vector(15 downto 0);
-            sel        : in  std_logic_vector(1 downto 0);
-            out_mux    : out std_logic_vector(15 downto 0)
+            add_out    : in  unsigned(15 downto 0);
+            sub_out    : in  unsigned(15 downto 0);
+            xor_out    : in  unsigned(15 downto 0);
+            inv_out    : in  unsigned(15 downto 0);
+            sel        : in  unsigned(1 downto 0);
+            out_mux    : out unsigned(15 downto 0)
         );
-    end component MUX;
+    end component MUX_Operation;
     ---------------------------------------------------------------------------------------
     
     ----------- Sinais internos -----------------------------------------------------------
 
     signal add_out      : unsigned(15 downto 0);
     signal sub_out      : unsigned(15 downto 0);
-    signal xor_out      : std_logic_vector(15 downto 0);
-    signal inv_out      : std_logic_vector(15 downto 0);
-    signal selected_out : std_logic_vector(15 downto 0);
+    signal xor_out      : unsigned(15 downto 0);
+    signal inv_out      : unsigned(15 downto 0);
+    signal selected_out : unsigned(15 downto 0);
 
     ---------------------------------------------------------------------------------------
     
@@ -101,10 +101,10 @@ begin
             out_inv   => inv_out
         );
 
-    MUX_inst : MUX
+    MUX_inst : MUX_Operation
         port map (
-            add_out => std_logic_vector(add_out),
-            sub_out => std_logic_vector(sub_out),
+            add_out => unsigned(add_out),
+            sub_out => unsigned(sub_out),
             xor_out => xor_out,
             inv_out => inv_out,
             sel     => operation,

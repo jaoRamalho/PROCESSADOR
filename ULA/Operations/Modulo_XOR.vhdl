@@ -1,11 +1,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity Modulo_XOR is
     port(
-        xor1    : in  std_logic_vector(15 downto 0);
-        xor2    : in  std_logic_vector(15 downto 0);
-        out_xor : out std_logic_vector(15 downto 0)
+        xor1    : in  unsigned(15 downto 0);
+        xor2    : in  unsigned(15 downto 0);
+        out_xor : out unsigned(15 downto 0)
     );
 end entity Modulo_XOR;
 
