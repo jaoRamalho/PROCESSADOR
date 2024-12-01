@@ -17,7 +17,8 @@ entity Control_Unit is
         pc_inc          : out std_logic;
         write_ir        : out std_logic;
         mux_const_addi  : out std_logic;
-        ula_op          : out unsigned(1 downto 0)
+        ula_op          : out unsigned(1 downto 0);
+        mux_acc_sel     : out std_logic
     );
 end entity Control_Unit;
 
@@ -62,42 +63,27 @@ begin
     );
 
 
-    process(clk, reset)
-    begin
-        if state = "00" then
-            pc_inc <= '1';
-        
-        elsif state = "01" then
-            pc_inc <= '0';
-            opcode <= instruction;
-            
-            case opcode is
-                when ADD =>
-                    mux_const_addi <= '0';
-                    ula_op <= "00";
-                when SUB =>
-                    mux_const_addi <= '0';
-                    ula_op <= "01";
-                when ADDI =>
-                    mux_const_addi <= '1';
-                    ula_op <= "00";
-                
-                when WRI =>
-                    write_ir <= '1';
-                
-
-                when others =>
-                    pc_inc <= '0';
-                    write_ir <= '0';
-                    mux_const_addi <= '0';
-            end case;
-
-        elsif state = "10" then
-            pc_inc <= '0';
-            write_ir <= '0';
-            mux_const_addi <= '0';
-        end if;
     
-    end process;
+    -- PC Increment
+    pc_inc <= '1' when state = "00" else '0';
+    
+    -- Write IR
+    write_ir <= '1' when (state = "01" and opcode = WRI) else '0';
+    
+    -- Opcode assignment
+    opcode <= instruction when (state = "01") else (others => '0');
+
+    -- Mux Const Addi
+    mux_const_addi <= '1' when (state = "01" and opcode = ADDI) else '0';
+
+    ula_op <= "00" when (opcode = ADD and state = "10") else
+              "01" when (opcode = SUB and state = "10") else
+              "10" when (opcode = ADDI and state = "10") else
+              "11";
+
+    mux_acc_sel <= '1' when (opcode = LDA and state = "10") else '0';
+
+    -- ULA Operation
+
 
 end architecture Behavioral;

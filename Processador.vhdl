@@ -89,6 +89,7 @@ architecture behavior of Processador is
     signal write_ir    : std_logic;
     signal pc_out      : unsigned(6 downto 0);
     signal mux_const_addi : std_logic;
+    signal mux_acc_sel : std_logic := '0';
     signal ula_op         : unsigned(1 downto 0);
     signal register_out   : unsigned(15 downto 0);
     signal data_out_rg    : unsigned(15 downto 0);
@@ -97,6 +98,10 @@ architecture behavior of Processador is
     signal Flag_zero      : std_logic;
     signal Flag_sinal     : std_logic;
     signal data_rom       : unsigned(16 downto 0);
+    signal in_ula         : unsigned(15 downto 0);
+
+    constant PREFIX      : unsigned(5 downto 0) := "000000";
+    signal data_in_sig   : unsigned(15 downto 0);
 
 begin
     
@@ -108,13 +113,14 @@ begin
         pc_out => pc_out
     );
 
+    
     rom_b : ROM
     port map(
         clk     => clk,
         address => pc_out,
         data    => data_rom
     );
-
+        
     control_unit_b : Control_Unit
     port map(
         clk            => clk,
@@ -123,8 +129,11 @@ begin
         pc_inc         => pc_inc,
         write_ir       => write_ir,
         mux_const_addi => mux_const_addi,
-        ula_op         => ula_op
+        ula_op         => ula_op,
+        mux_acc_sel    => mux_acc_sel
     );
+        
+    data_in_sig <= PREFIX & data_rom(9 downto 0);
 
     rg : REGISTER_FILE
     port map(
@@ -132,7 +141,7 @@ begin
         rst      => rst,
         write_en => write_ir,
         address  => data_rom(12 downto 10),
-        data_in  => "000000" & data_rom(9 downto 0),
+        data_in  => data_in_sig,
         data_out => data_out_rg
     );
 
@@ -145,9 +154,17 @@ begin
         out_acc      => out_acc
     );
 
+    muuxccc : MUX_acc
+    port map(
+        ula_out      => out_ula,
+        out_register => data_out_rg,
+        sel          => mux_acc_sel,
+        out_mux      => in_ula
+    );
+
     mux_const : MUX_Constante
     port map(
-        constante    => "000000" & data_rom(9 downto 0),
+        constante    => data_in_sig,
         out_register => data_out_rg,
         sel          => mux_const_addi,
         out_mux      => register_out
@@ -156,11 +173,12 @@ begin
     ula_b : ULA
     port map(
         a_in       => register_out,
-        b_in       => out_acc,
+        b_in       => in_ula,
         operation  => ula_op,
         out_ula    => out_ula,
         Flag_zero  => Flag_zero,
         flag_sinal => Flag_sinal
     );
+
 
 end architecture behavior;

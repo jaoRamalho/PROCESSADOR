@@ -39,10 +39,12 @@ architecture a_ROM of ROM is
       -- Posição => Instrução (Opcode & Operandos)
 
       -- Instrução 0: ADDI reg0, 1
-      0 => "11010000000000000", -- 17 bits 110
-      1 => "11010110000000101", -- 17 bits 110
-      2 => "00111000000001000", -- 17 bits 110
-      3 => "01001011000110001", -- 17 bits 110
+      0 => B"0000_0000000000000", -- 17 bits 110
+      1 => B"1101_011_0000000101", -- 17 bits 110
+      2 => B"1101_100_0000001000", -- 17 bits 110
+      3 => B"0001_101_011_100_000", -- 17 bits 110
+      
+
     
       -- Instruções adicionais podem ser adicionadas conforme necessário
       others => (others => '0')

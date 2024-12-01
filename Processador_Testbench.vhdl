@@ -18,9 +18,7 @@ architecture behavior of Processador_Testbench is
     -- Sinais para conectar ao UUT
     signal clk   : std_logic := '0';
     signal rst : std_logic := '0';
-
 begin
-
     -- Instantiate the Unit Under Test (UUT)
     pr : Processador
         port map(
