@@ -15,12 +15,5 @@ end entity MUX_acc;
 
 architecture Behavioral of MUX_acc is
 begin
-    process(sel, ula_out, out_register)
-    begin
-        if sel = '1' then
-            out_mux <= ula_out;
-        else
-            out_mux <= out_register;
-        end if;
-    end process;
+    out_mux <= ula_out when sel = '1' else out_register;
 end architecture Behavioral;

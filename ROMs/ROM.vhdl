@@ -2,9 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-
 -- Estrutura da Instrução:
 -- Vamos considerar que a instrução de 17 bits pode ser dividida em diferentes campos, como opcode, registradores, e valores imediatos. Por exemplo:
+--
+-- Type R:
 --
 -- | Bits         | Campo                     | Descrição                                                                 |
 -- |--------------|---------------------------|---------------------------------------------------------------------------|
@@ -14,14 +15,21 @@ use ieee.numeric_std.all;
 -- | 5 downto 3   | Registrador Fonte 2 (Rs2) | Seleciona o segundo registrador a ser lido ou indica operação específica  |
 -- | 2 downto 0   | Imediato/Função           | Utilizado para constantes em instruções imediatas ou funções adicionais   |
 --
--- COM CONSTANTE: 
-
+-- Type I: 
+--
 -- | Bits         | Campo                     | Descrição                                                                 |
 -- |--------------|---------------------------|---------------------------------------------------------------------------|
 -- | 16 downto 13 | Opcode                    | Código de operação (4 bits)                                               |
 -- | 12 downto 9  | Registrador Destino (Rd)  | Seleciona qual registrador será escrito                                   |
--- | 8 downto 0   | Constante                 | Valor da constante que será escrita no registrador                        |
-
+-- | 8 downto 3   | Constante                 | Seleciona o primeiro registrador a ser lido                               |
+-- | 2 downto 0   | Funçao                    | Valor da constante que será escrita no registrador                        |
+--
+-- Type J:
+--
+-- | Bits         | Campo                     | Descrição                                                                 |
+-- |--------------|---------------------------|---------------------------------------------------------------------------|
+-- | 16 downto 13 | Opcode                    | Código de operação (4 bits)                                               |
+-- | 12 downto 0  | Endereço                  | Endereço de destino da instrução                                          |
 
 entity ROM is
    port( 
@@ -39,11 +47,9 @@ architecture a_ROM of ROM is
       -- Posição => Instrução (Opcode & Operandos)
 
       -- Instrução 0: ADDI reg0, 1
-      0 => B"0000_0000000000000", -- 17 bits 110
-      1 => B"1101_011_0000000101", -- 17 bits 110
-      2 => B"1101_100_0000001000", -- 17 bits 110
-      3 => B"0001_101_011_100_000", -- 17 bits 110
-      
+      0 => "00000000000000000", -- 17 bits 110
+      1 => "11010110000101010", -- 17 bits 110
+      2 => "11011000001000010", -- 17 bits 110
 
     
       -- Instruções adicionais podem ser adicionadas conforme necessário

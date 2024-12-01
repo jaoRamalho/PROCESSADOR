@@ -18,7 +18,7 @@ begin
       if rst='1' then
          state_s <= "00";
       elsif rising_edge(clk) then
-         if state_s="10" then        -- se agora esta em 2
+         if state_s="11" then        -- se agora esta em 3
             state_s <= "00";         -- o prox vai voltar ao zero
          else
             state_s <= state_s + 1;   -- senao avanca

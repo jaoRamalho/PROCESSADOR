@@ -8,8 +8,10 @@ entity REGISTER_FILE is
         rst             : in  std_logic;                           -- Reset
         write_en        : in  std_logic; 
         address         : in  unsigned(2 downto 0);        -- Endereço do registrador
+        address2        : in  unsigned(2 downto 0);        -- Endereço do registrador 2
         data_in         : in  unsigned(15 downto 0);       -- Dados de entrada
-        data_out        : out unsigned(15 downto 0)        -- Dados de saída
+        data_out        : out unsigned(15 downto 0);        -- Dados de saída
+        data_out2       : out unsigned(15 downto 0)        -- Dados de saída 2
     );
 end entity REGISTER_FILE;
 
@@ -32,6 +34,7 @@ begin
             end if;
             
             data_out <= registers(to_integer(unsigned(address)));
+            data_out2 <= registers(to_integer(unsigned(address2)));
         end if;
     end process;
 

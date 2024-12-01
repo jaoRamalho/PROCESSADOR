@@ -15,12 +15,5 @@ end entity MUX_Constante;
 
 architecture Behavioral of MUX_Constante is
 begin
-    process(sel, constante, out_register)
-    begin
-        if sel = '1' then
-            out_mux <= constante;
-        else
-            out_mux <= out_register;
-        end if;
-    end process;
+    out_mux <= constante when sel = '1' else out_register;
 end architecture Behavioral;
