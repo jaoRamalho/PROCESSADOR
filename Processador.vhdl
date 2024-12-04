@@ -87,7 +87,8 @@ architecture behavior of Processador is
             mux_accumulator_select      : out std_logic;
             accumulator_write_enable    : out std_logic;
             register_file_mux_select    : out std_logic;
-            register_address_mux_select : out std_logic
+            register_address_mux_select : out std_logic;
+            pc_source_select            : out std_logic
         );
     end component;
 
@@ -96,6 +97,8 @@ architecture behavior of Processador is
             clk      : in std_logic;
             reset    : in std_logic;
             enable   : in std_logic;
+            pc_source_select : in std_logic;
+            pc_in    : in unsigned(6 downto 0);
             pc_out   : out unsigned(6 downto 0)
         );
     end component;
@@ -139,6 +142,7 @@ architecture behavior of Processador is
     signal register_file_mux_select    : std_logic;
     signal register_address            : unsigned(2 downto 0);
     signal register_address_mux_select : std_logic;
+    signal pc_source_select            : std_logic;
 
     signal register_file_data_in       : unsigned(15 downto 0);
 
@@ -149,6 +153,8 @@ begin
         clk    => clk,
         reset  => rst,
         enable => pc_increment,
+        pc_source_select => pc_source_select,
+        pc_in  => rom_data(9 downto 3),
         pc_out => pc_output
     );
 
@@ -171,7 +177,8 @@ begin
         mux_accumulator_select      => mux_accumulator_select,
         accumulator_write_enable    => accumulator_write_enable,
         register_file_mux_select    => register_file_mux_select,
-        register_address_mux_select => register_address_mux_select
+        register_address_mux_select => register_address_mux_select,
+        pc_source_select            => pc_source_select
     );
 
     register_file_mux : MUX_registerFile

@@ -7,6 +7,8 @@ entity PC is
         clk      : in std_logic;
         reset    : in std_logic;
         enable   : in std_logic;
+        pc_source_select : in std_logic;
+        pc_in    : in unsigned(6 downto 0);
         pc_out   : out unsigned(6 downto 0)
     );
 end entity PC;
@@ -19,17 +21,19 @@ begin
         if rising_edge(clk) then
             if reset = '1' then
                 pc_reg <= (others => '0');
-            end if;
-            
-            if enable = '1' then
-                if pc_reg = "1111111" then
-                    pc_reg <= (others => '0');
+            elsif enable = '1' then
+                if pc_source_select = '1' then
+                    pc_reg <= pc_in; -- Salta para o endereço especificado
                 else
-                    pc_reg <= pc_reg + 1;
+                    if pc_reg = "1111111" then
+                        pc_reg <= (others => '0');
+                    else
+                        pc_reg <= pc_reg + 1;
+                    end if;
                 end if;
             end if;
         end if;
     end process;
-    
+
     pc_out <= pc_reg;
 end architecture Behavioral;

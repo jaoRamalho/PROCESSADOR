@@ -52,7 +52,23 @@ architecture a_ROM of ROM is
       2 => B"1101_100_0001000_010", -- coloca 8 no registrador 4
       3 => B"0011_100_011_101_0001", -- soma os valores dos registradores 4 e 3 e coloca no registrador 5
       4 => B"0111_101_101_0001_010", -- subtrai 1 do valor do registrador 5 e coloca no registrador 5
-    
+      5 => B"1110_0000010100_000", -- -- salta para o endereco 20   
+      6 => B"1101_011_0000000_010", -- coloca 0 no registrador 3
+      7 => B"0000_0000000000000", -- faz nada
+      8 => B"0000_0000000000000", -- faz nada
+      9 => B"0000_0000000000000", -- faz nada
+      10 => B"0000_0000000000000", -- faz nada
+      11 => B"0000_0000000000000", -- faz nada
+      12 => B"0000_0000000000000", -- faz nada
+      13 => B"0000_0000000000000", -- faz nada
+      14 => B"0000_0000000000000", -- faz nada
+      15 => B"0000_0000000000000", -- faz nada
+      16 => B"0000_0000000000000", -- faz nada
+      17 => B"0000_0000000000000", -- faz nada
+      18 => B"0000_0000000000000", -- faz nada
+      19 => B"0000_0000000000000", -- faz nada
+      20 => B"1101_011_0000011_010", -- coloca 3 no registrador 3
+      21 => B"1110_0000000011_000", -- -- salta para o endereco 3
       -- Instruções adicionais podem ser adicionadas conforme necessário
       others => (others => '0')
    );

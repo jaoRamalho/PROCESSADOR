@@ -18,7 +18,8 @@ entity Control_Unit is
         mux_accumulator_select      : out std_logic;
         accumulator_write_enable    : out std_logic;
         register_file_mux_select    : out std_logic;
-        register_address_mux_select : out std_logic
+        register_address_mux_select : out std_logic;
+        pc_source_select            : out std_logic
     );
 end entity Control_Unit;
 
@@ -68,7 +69,8 @@ begin
         );
 
     -- Incremento do PC
-    pc_increment <= '1' when state = "00" else '0';
+    pc_increment <= '1' when (state = "00" or (state = "01" and opcode = JMP)) else '0';
+    pc_source_select <= '1' when (opcode = JMP and state = "01") else '0';
 
     -- Atribuição do opcode e funct
     opcode <= instruction(6 downto 3) when (state = "01") else (others => '0');
