@@ -4,8 +4,8 @@ use ieee.numeric_std.all;
 
 entity Processador is
     port(
-        clk           : in  std_logic;                         -- Clock
-        rst           : in  std_logic                          -- Reset
+        clk : in std_logic;  -- Clock
+        rst : in std_logic   -- Reset
     );
 end Processador;
 
@@ -24,7 +24,7 @@ architecture behavior of Processador is
 
     component MUX_acc is
         port(
-            ula_out      : in  unsigned(15 downto 0);
+            out_acc      : in  unsigned(15 downto 0);
             out_register : in  unsigned(15 downto 0);  
             sel          : in  std_logic;
             out_mux      : out unsigned(15 downto 0)
@@ -33,14 +33,15 @@ architecture behavior of Processador is
 
     component REGISTER_FILE is
         port (
-            clk             : in  std_logic;                           -- Clock
-            rst             : in  std_logic;                           -- Reset
+            clk             : in  std_logic;
+            rst             : in  std_logic;
             write_en        : in  std_logic; 
-            address         : in  unsigned(2 downto 0);        -- Endereço do registrador
-            address2        : in  unsigned(2 downto 0);        -- Endereço do registrador 2
-            data_in         : in  unsigned(15 downto 0);       -- Dados de entrada
-            data_out        : out unsigned(15 downto 0);        -- Dados de saída
-            data_out2       : out unsigned(15 downto 0)        -- Dados de saída 2
+            write_address   : in  unsigned(2 downto 0);
+            read_address1   : in  unsigned(2 downto 0);
+            read_address2   : in  unsigned(2 downto 0);
+            data_in         : in  unsigned(15 downto 0);
+            read_data1      : out unsigned(15 downto 0);
+            read_data2      : out unsigned(15 downto 0)
         );
     end component;
 
@@ -72,20 +73,21 @@ architecture behavior of Processador is
         );
     end component;
 
-    component Control_Unit is 
-        port (
-            clk             : in  std_logic;
-            reset           : in  std_logic;
-            instruction     : in  unsigned(6 downto 0); -- Instrução de 4 bits
+    component Control_Unit is
+        port(
+            clk                         : in  std_logic;
+            rst                         : in  std_logic;
+            instruction                 : in  unsigned(6 downto 0); -- Instrução de 7 bits
 
             -- Sinais de controle
-            pc_inc          : out std_logic;
-            write_ir        : out std_logic;
-            mux_const_addi  : out std_logic;
-            ula_op          : out unsigned(1 downto 0);
-            mux_acc_sel     : out std_logic;
-            write_en_acc    : out std_logic;
-            mux_rg_sel      : out std_logic
+            pc_increment                : out std_logic;
+            write_instruction_register  : out std_logic;
+            mux_constant_addi_select    : out std_logic;
+            alu_operation               : out unsigned(1 downto 0);
+            mux_accumulator_select      : out std_logic;
+            accumulator_write_enable    : out std_logic;
+            register_file_mux_select    : out std_logic;
+            register_address_mux_select : out std_logic
         );
     end component;
 
@@ -100,120 +102,140 @@ architecture behavior of Processador is
 
     component MUX_Constante is
         port(
-            constante : in  unsigned(15 downto 0);
-            out_register : in  unsigned(15 downto 0);  
-            sel       : in  std_logic;
-            out_mux   : out unsigned(15 downto 0)
+            constante   : in  unsigned(15 downto 0);
+            out_register: in  unsigned(15 downto 0);  
+            sel         : in  std_logic;
+            out_mux     : out unsigned(15 downto 0)
         );
     end component;
 
-    signal instruction    : unsigned(3 downto 0) := (others => '0');
-    signal pc_inc         : std_logic;
-    signal write_ir       : std_logic;
-    signal pc_out         : unsigned(6 downto 0);
-    signal mux_const_addi : std_logic;
-    signal mux_acc_sel    : std_logic := '0';
-    signal ula_op         : unsigned(1 downto 0);
-    signal register_out   : unsigned(15 downto 0);
-    signal data_out_rg    : unsigned(15 downto 0);
-    signal data_out_rg2   : unsigned(15 downto 0);
-    signal out_ula        : unsigned(15 downto 0);
-    signal out_acc        : unsigned(15 downto 0);
-    signal Flag_zero      : std_logic;
-    signal Flag_sinal     : std_logic;
-    signal data_rom       : unsigned(16 downto 0);
-    signal in_ula         : unsigned(15 downto 0);
-    signal write_en_acc   : std_logic;
-    signal mux_rg_sel     : std_logic;
+    component MUX_reg_add is
+        port(
+            data_default   : in  unsigned(2 downto 0);
+            data_operation : in  unsigned(2 downto 0);  
+            sel            : in  std_logic;
+            out_mux        : out unsigned(2 downto 0)
+        );
+    end component;
 
-    signal data_in_registes  : unsigned(15 downto 0);
+    -- Sinais internos renomeados para maior clareza
+    signal opcode                      : unsigned(3 downto 0) := (others => '0');
+    signal pc_increment                : std_logic;
+    signal write_instruction_register  : std_logic;
+    signal pc_output                   : unsigned(6 downto 0);
+    signal mux_constant_addi_select    : std_logic;
+    signal mux_accumulator_select      : std_logic := '0';
+    signal alu_operation               : unsigned(1 downto 0);
+    signal register_output             : unsigned(15 downto 0);
+    signal register_file_output1       : unsigned(15 downto 0);
+    signal register_file_output2       : unsigned(15 downto 0);
+    signal alu_output                  : unsigned(15 downto 0);
+    signal accumulator_output          : unsigned(15 downto 0);
+    signal zero_flag                   : std_logic;
+    signal sign_flag                   : std_logic;
+    signal rom_data                    : unsigned(16 downto 0);
+    signal mux_output                  : unsigned(15 downto 0);
+    signal accumulator_write_enable    : std_logic;
+    signal register_file_mux_select    : std_logic;
+    signal register_address            : unsigned(2 downto 0);
+    signal register_address_mux_select : std_logic;
+
+    signal register_file_data_in       : unsigned(15 downto 0);
 
 begin
-    
-    pc_b : PC
+
+    program_counter : PC
     port map(
         clk    => clk,
         reset  => rst,
-        enable => pc_inc,
-        pc_out => pc_out
+        enable => pc_increment,
+        pc_out => pc_output
     );
 
-    
-    rom_b : ROM
+    instruction_memory : ROM
     port map(
         clk     => clk,
-        address => pc_out,
-        data    => data_rom
+        address => pc_output,
+        data    => rom_data
     );
-    
-    control_unit_b : Control_Unit
+
+    cu : Control_Unit
     port map(
-        clk            => clk,
-        reset          => rst,
-        instruction    => data_rom(16 downto 13) & data_rom(2 downto 0),
-        pc_inc         => pc_inc,
-        write_ir       => write_ir,
-        mux_const_addi => mux_const_addi,
-        ula_op         => ula_op,
-        mux_acc_sel    => mux_acc_sel,
-        write_en_acc   => write_en_acc,
-        mux_rg_sel     => mux_rg_sel
+        clk                         => clk,
+        rst                         => rst,
+        instruction                 => rom_data(16 downto 13) & rom_data(2 downto 0),
+        pc_increment                => pc_increment,
+        write_instruction_register  => write_instruction_register,
+        mux_constant_addi_select    => mux_constant_addi_select,
+        alu_operation               => alu_operation,
+        mux_accumulator_select      => mux_accumulator_select,
+        accumulator_write_enable    => accumulator_write_enable,
+        register_file_mux_select    => register_file_mux_select,
+        register_address_mux_select => register_address_mux_select
     );
-            
-    mux_rg : MUX_registerFile
+
+    register_file_mux : MUX_registerFile
     port map(
-        data_rom     => "0000000000" & data_rom(8 downto 3),
-        data_ula     => out_ula,
-        sel          => mux_rg_sel,
-        out_mux      => data_in_registes
+        data_rom  => "000000000000" & rom_data(6 downto 3),
+        data_ula  => alu_output,
+        sel       => register_file_mux_select,
+        out_mux   => register_file_data_in
+    );
+
+    register_address_mux : MUX_reg_add
+    port map(
+        data_default   => rom_data(12 downto 10),
+        data_operation => rom_data(6 downto 4),
+        sel            => register_address_mux_select,
+        out_mux        => register_address
     );
 
     rg : REGISTER_FILE
     port map(
-        clk       => clk,
-        rst       => rst,
-        write_en  => write_ir,
-        address   => data_rom(12 downto 10),
-        address2  => data_rom(9 downto 7),
-        data_in   => data_in_registes,
-        data_out  => data_out_rg,
-        data_out2 => data_out_rg2
+        clk           => clk,
+        rst           => rst,
+        write_en      => write_instruction_register,
+        write_address => register_address,
+        read_address1 => rom_data(12 downto 10),
+        read_address2 => rom_data(9 downto 7),
+        data_in       => register_file_data_in,
+        read_data1    => register_file_output1,
+        read_data2    => register_file_output2
     );
 
     acc : ACCUMULATOR
     port map(
         clk          => clk,
         rst          => rst,
-        write_en_acc => write_en_acc,
-        data_in_acc  => out_ula,
-        out_acc      => out_acc
+        write_en_acc => accumulator_write_enable,
+        data_in_acc  => alu_output,
+        out_acc      => accumulator_output
     );
 
-    muuxccc : MUX_acc
+    accumulator_mux : MUX_acc
     port map(
-        ula_out      => out_ula,
-        out_register => data_out_rg2,
-        sel          => mux_acc_sel,
-        out_mux      => in_ula
+        out_acc      => accumulator_output,
+        out_register => register_file_output2,
+        sel          => mux_accumulator_select,
+        out_mux      => mux_output
     );
 
-    mux_const : MUX_Constante
+    constant_mux : MUX_Constante
     port map(
-        constante    => "0000000000" & data_rom(8 downto 3),
-        out_register => data_out_rg,
-        sel          => mux_const_addi,
-        out_mux      => register_out
+        constante    => "000000000000" & rom_data(6 downto 3),
+        out_register => register_file_output1,
+        sel          => mux_constant_addi_select,
+        out_mux      => register_output
     );
 
-    ula_b : ULA
+    alu : ULA
     port map(
-        a_in       => register_out,
-        b_in       => in_ula,
-        operation  => ula_op,
-        out_ula    => out_ula,
-        Flag_zero  => Flag_zero,
-        flag_sinal => Flag_sinal
+        a_in       => register_output,
+        b_in       => mux_output,
+        operation  => alu_operation,
+        out_ula    => alu_output,
+        Flag_zero  => zero_flag,
+        flag_sinal => sign_flag
     );
-
 
 end architecture behavior;

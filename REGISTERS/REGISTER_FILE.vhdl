@@ -7,11 +7,12 @@ entity REGISTER_FILE is
         clk             : in  std_logic;                           -- Clock
         rst             : in  std_logic;                           -- Reset
         write_en        : in  std_logic; 
-        address         : in  unsigned(2 downto 0);        -- Endereço do registrador
-        address2        : in  unsigned(2 downto 0);        -- Endereço do registrador 2
+        write_address   : in  unsigned(2 downto 0);        -- Endereço do registrador
+        read_address1   : in  unsigned(2 downto 0);        -- Endereço do registrador
+        read_address2   : in  unsigned(2 downto 0);        -- Endereço do registrador 2
         data_in         : in  unsigned(15 downto 0);       -- Dados de entrada
-        data_out        : out unsigned(15 downto 0);        -- Dados de saída
-        data_out2       : out unsigned(15 downto 0)        -- Dados de saída 2
+        read_data1      : out unsigned(15 downto 0);        -- Dados de saída
+        read_data2      : out unsigned(15 downto 0)        -- Dados de saída 2
     );
 end entity REGISTER_FILE;
 
@@ -30,12 +31,13 @@ begin
                 registers <= (others => (others => '0'));
             elsif write_en = '1' then
                 -- Escrita: grava em um registrador específico quando habilitado
-                registers(to_integer(unsigned(address))) <= data_in;
+                registers(to_integer(write_address)) <= data_in;
+
             end if;
-            
-            data_out <= registers(to_integer(unsigned(address)));
-            data_out2 <= registers(to_integer(unsigned(address2)));
         end if;
     end process;
+    
+    read_data1 <= registers(to_integer(read_address1));
+    read_data2 <= registers(to_integer(read_address2));
 
 end architecture Behavioral;
