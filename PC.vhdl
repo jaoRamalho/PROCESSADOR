@@ -6,7 +6,7 @@ entity PC is
     port(
         clk      : in std_logic;
         reset    : in std_logic;
-        enable   : in std_logic;
+        pc_increment   : in std_logic;
         pc_source_select : in std_logic;
         pc_in    : in unsigned(6 downto 0);
         pc_out   : out unsigned(6 downto 0)
@@ -21,7 +21,7 @@ begin
         if rising_edge(clk) then
             if reset = '1' then
                 pc_reg <= (others => '0');
-            elsif enable = '1' then
+            elsif pc_increment = '1' then
                 if pc_source_select = '1' then
                     pc_reg <= pc_in; -- Salta para o endereço especificado
                 else

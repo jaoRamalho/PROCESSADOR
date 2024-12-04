@@ -96,7 +96,7 @@ architecture behavior of Processador is
         port(
             clk      : in std_logic;
             reset    : in std_logic;
-            enable   : in std_logic;
+            pc_increment   : in std_logic;
             pc_source_select : in std_logic;
             pc_in    : in unsigned(6 downto 0);
             pc_out   : out unsigned(6 downto 0)
@@ -152,7 +152,7 @@ begin
     port map(
         clk    => clk,
         reset  => rst,
-        enable => pc_increment,
+        pc_increment => pc_increment,
         pc_source_select => pc_source_select,
         pc_in  => rom_data(9 downto 3),
         pc_out => pc_output
