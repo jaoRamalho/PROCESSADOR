@@ -230,8 +230,8 @@ begin
 
     alu : ULA
     port map(
-        a_in       => register_output,
-        b_in       => mux_output,
+        a_in       => mux_output,
+        b_in       => register_output,
         operation  => alu_operation,
         out_ula    => alu_output,
         Flag_zero  => zero_flag,

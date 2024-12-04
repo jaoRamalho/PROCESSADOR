@@ -75,15 +75,15 @@ begin
     funct  <= instruction(2 downto 0) when (state = "01") else (others => '0');
 
     -- Lógica dos sinais de controle
-    register_file_mux_select <= '0' when (state = "01" and (opcode = LDA or opcode = ADD)) else '1';
-    write_instruction_register <= '1' when (state = "01" and (opcode = WRI or opcode = ADD)) else '0';
+    register_file_mux_select <= '0' when (state = "01" and (opcode = LDA or opcode = ADD or opcode = SUBI)) else '1';
+    write_instruction_register <= '1' when (state = "01" and (opcode = WRI or opcode = ADD or opcode = SUBI)) else '0';
 
     accumulator_write_enable <= '1' when (opcode = LDA and state = "01") else '0';
     register_address_mux_select <= '1' when (state = "01" and opcode = ADD) else '0';
     
     -- mux_accumulator_select <= '1' when (opcode = ADD and state = "01") else '0';
     -- Seleção do mux constante/addi (comentado caso não seja usado)
-    mux_constant_addi_select <= '1' when (state = "01" and opcode = SUBI) else '0';
+    mux_constant_addi_select <= '1' when (state = "01" and opcode = SUBI) else '0'; 
 
     -- Operação da ULA
     alu_operation <=
