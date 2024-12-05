@@ -67,7 +67,7 @@ architecture a_ROM of ROM is
       17 => B"0000_0000000000000", -- faz nada
       18 => B"0000_0000000000000", -- faz nada
       19 => B"0000_0000000000000", -- faz nada
-      20 => B"1101_011_0000011_010", -- coloca 3 no registrador 3
+      20 => B"0011_000_101_011_0001", -- soma os valores dos registradores 0 e 3 e coloca no registrador 5
       21 => B"1110_0000000011_000", -- -- salta para o endereco 3
       -- Instruções adicionais podem ser adicionadas conforme necessário
       others => (others => '0')

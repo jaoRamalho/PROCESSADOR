@@ -38,6 +38,7 @@ architecture Behavioral of Control_Unit is
     constant WR     : unsigned(3 downto 0) := "1100"; -- Escreve no registrador o valor do acumulador
     constant WRI    : unsigned(3 downto 0) := "1101"; -- Escreve no registrador o valor de uma constante
     constant JMP    : unsigned(3 downto 0) := "1110"; -- Salto incondicional
+    constant CPY    : unsigned(3 downto 0) := "1000"; -- Copia o valor de um registrador para outro
 
     -- Sinais internos para decodificação
     signal state      : unsigned(1 downto 0) := "00";
