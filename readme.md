@@ -1,3 +1,9 @@
+# Esclarecimentos
+
+Nas pasta build tem um arquivo chamado "formas_de_onda.gkw" nele estão as formas de onda do lab5.
+
+O top_level é o "processador.vhdl".
+
 # Protocolo de Instruções
 
 ## Estrutura da Instrução
