@@ -88,27 +88,27 @@ architecture behavior of Processador is
             accumulator_write_enable    : out std_logic;
             register_file_mux_select    : out std_logic;
             register_address_mux_select : out std_logic;
-            pc_source_select            : out std_logic
+            pc_source_select            : out unsigned(1 downto 0)
         );
     end component;
 
     component PC is
         port(
-            clk      : in std_logic;
-            reset    : in std_logic;
-            pc_increment   : in std_logic;
-            pc_source_select : in std_logic;
-            pc_in    : in unsigned(6 downto 0);
-            pc_out   : out unsigned(6 downto 0)
+            clk              : in std_logic;
+            reset            : in std_logic;
+            pc_increment     : in std_logic;
+            pc_source_select : in unsigned(1 downto 0);
+            pc_in            : in unsigned(6 downto 0);
+            pc_out           : out unsigned(6 downto 0)
         );
     end component;
 
     component MUX_Constante is
         port(
-            constante   : in  unsigned(15 downto 0);
-            out_register: in  unsigned(15 downto 0);  
-            sel         : in  std_logic;
-            out_mux     : out unsigned(15 downto 0)
+            constante    : in  unsigned(15 downto 0);
+            out_register : in  unsigned(15 downto 0);  
+            sel          : in  std_logic;
+            out_mux      : out unsigned(15 downto 0)
         );
     end component;
 
@@ -142,7 +142,7 @@ architecture behavior of Processador is
     signal register_file_mux_select    : std_logic;
     signal register_address            : unsigned(2 downto 0);
     signal register_address_mux_select : std_logic;
-    signal pc_source_select            : std_logic;
+    signal pc_source_select            : unsigned(1 downto 0);
 
     signal register_file_data_in       : unsigned(15 downto 0);
 
@@ -150,12 +150,12 @@ begin
 
     program_counter : PC
     port map(
-        clk    => clk,
-        reset  => rst,
-        pc_increment => pc_increment,
+        clk              => clk,
+        reset            => rst,
+        pc_increment     => pc_increment,
         pc_source_select => pc_source_select,
-        pc_in  => rom_data(9 downto 3),
-        pc_out => pc_output
+        pc_in            => rom_data(9 downto 3),
+        pc_out           => pc_output
     );
 
     instruction_memory : ROM

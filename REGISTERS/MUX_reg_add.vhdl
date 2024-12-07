@@ -5,10 +5,10 @@ use ieee.numeric_std.all;
 
 entity MUX_reg_add is
     port(
-        data_default : in  unsigned(2 downto 0);
+        data_default    : in  unsigned(2 downto 0);
         data_operation  : in  unsigned(2 downto 0);  
-        sel       : in  std_logic;
-        out_mux   : out unsigned(2 downto 0)
+        sel             : in  std_logic;
+        out_mux         : out unsigned(2 downto 0)
     );
 end entity MUX_reg_add;
 

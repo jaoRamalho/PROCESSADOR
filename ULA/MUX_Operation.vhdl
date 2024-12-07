@@ -8,7 +8,7 @@ entity MUX_Operation is
         sub_out : in unsigned(15 downto 0);
         inv_out : in unsigned(15 downto 0);
         xor_out : in unsigned(15 downto 0);
-        sel  : in unsigned(1 downto 0);
+        sel     : in unsigned(1 downto 0);
         out_mux : out unsigned(15 downto 0)
     );
 end entity MUX_Operation;

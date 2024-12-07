@@ -5,8 +5,8 @@ use ieee.numeric_std.all;
 
 entity MUX_registerFile is
     port(
-        data_rom : in  unsigned(15 downto 0);
-        data_ula : in  unsigned(15 downto 0);  
+        data_rom  : in  unsigned(15 downto 0);
+        data_ula  : in  unsigned(15 downto 0);  
         sel       : in  std_logic;
         out_mux   : out unsigned(15 downto 0)
     );
