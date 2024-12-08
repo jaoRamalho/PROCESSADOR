@@ -9,6 +9,10 @@ entity Control_Unit is
         clk                         : in  std_logic;
         rst                         : in  std_logic;
         instruction                 : in  unsigned(6 downto 0); -- Instrução de 7 bits, 4b de opcode e 3b de função
+        
+        Flag_zero                   : in std_logic; -- Sinal de flag zero
+        Flag_sinal                  : in std_logic; -- Sinal de flag de sinal
+        Flag_borrow                 : in std_logic; -- Sinal de flag de borrow
 
         -- Sinais de controle
         pc_increment                : out std_logic;
@@ -40,6 +44,9 @@ architecture Behavioral of Control_Unit is
     constant JMP    : unsigned(3 downto 0) := "1110"; -- Salto incondicional
     constant CPY    : unsigned(3 downto 0) := "1000"; -- Copia o valor de um registrador para outro
 
+    constant BGT    : unsigned(3 downto 0) := "1001"; -- Branch if greater than
+    constant BVC    : unsigned(3 downto 0) := "1010"; -- Branch if overflow clear
+
     -- Sinais internos para decodificação
     signal state      : unsigned(1 downto 0) := "00";
     signal opcode     : unsigned(3 downto 0) := "0000";
@@ -68,14 +75,18 @@ begin
             rst   => rst,
             state => state
         );
-
-    -- Incremento do PC
-    pc_increment <= '1' when (state = "00" or (state = "01" and opcode = JMP)) else '0';
-    pc_source_select <= "01" when (opcode = JMP and state = "01") else "00";
-
+        
     -- Atribuição do opcode e funct
     opcode <= instruction(6 downto 3) when (state = "01") else (others => '0');
     funct  <= instruction(2 downto 0) when (state = "01") else (others => '0');
+
+    -- Incremento do PC
+    pc_increment <= '1' when state = "00" else '0';
+    
+    pc_source_select <= "01" when (opcode = JMP and state = "01") else 
+                        "10" when (opcode = BGT and state = "01" and Flag_zero = '0' and Flag_sinal = '0') else 
+                        "11" when (opcode = BVC and state = "01" and Flag_borrow = '0') else 
+                        "00";
 
     -- Lógica dos sinais de controle
     register_file_mux_select <= '0' when (state = "01" and (opcode = LDA or opcode = ADD or opcode = SUBI)) else '1';

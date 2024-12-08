@@ -52,7 +52,8 @@ architecture behavior of Processador is
             operation  : in  unsigned(1 downto 0);
             out_ula    : out unsigned(15 downto 0);
             Flag_zero  : out std_logic;
-            flag_sinal : out std_logic
+            Flag_sinal : out std_logic;
+            Flag_borrow: out std_logic
         );
     end component;
 
@@ -78,6 +79,10 @@ architecture behavior of Processador is
             clk                         : in  std_logic;
             rst                         : in  std_logic;
             instruction                 : in  unsigned(6 downto 0); -- Instrução de 7 bits
+
+            Flag_zero                   : in  std_logic; -- Flag de zero
+            Flag_sinal                  : in  std_logic; -- Flag de sinal
+            Flag_borrow                 : in  std_logic; -- Flag de borrow
 
             -- Sinais de controle
             pc_increment                : out std_logic;
@@ -134,8 +139,6 @@ architecture behavior of Processador is
     signal register_file_output2       : unsigned(15 downto 0);
     signal alu_output                  : unsigned(15 downto 0);
     signal accumulator_output          : unsigned(15 downto 0);
-    signal zero_flag                   : std_logic;
-    signal sign_flag                   : std_logic;
     signal rom_data                    : unsigned(16 downto 0);
     signal mux_output                  : unsigned(15 downto 0);
     signal accumulator_write_enable    : std_logic;
@@ -143,6 +146,10 @@ architecture behavior of Processador is
     signal register_address            : unsigned(2 downto 0);
     signal register_address_mux_select : std_logic;
     signal pc_source_select            : unsigned(1 downto 0);
+    
+    signal flag_borrow                 : std_logic;
+    signal flag_zero                   : std_logic;
+    signal flag_sinal                  : std_logic;
 
     signal register_file_data_in       : unsigned(15 downto 0);
 
@@ -178,7 +185,10 @@ begin
         accumulator_write_enable    => accumulator_write_enable,
         register_file_mux_select    => register_file_mux_select,
         register_address_mux_select => register_address_mux_select,
-        pc_source_select            => pc_source_select
+        pc_source_select            => pc_source_select,
+        Flag_zero                   => flag_zero,
+        Flag_sinal                  => flag_sinal,
+        Flag_borrow                 => flag_borrow
     );
 
     register_file_mux : MUX_registerFile
@@ -237,12 +247,13 @@ begin
 
     alu : ULA
     port map(
-        a_in       => mux_output,
-        b_in       => register_output,
-        operation  => alu_operation,
-        out_ula    => alu_output,
-        Flag_zero  => zero_flag,
-        flag_sinal => sign_flag
+        a_in        => mux_output,
+        b_in        => register_output,
+        operation   => alu_operation,
+        out_ula     => alu_output,
+        Flag_zero   => flag_zero,
+        Flag_sinal  => flag_sinal,
+        Flag_borrow => flag_borrow
     );
 
 end architecture behavior;

@@ -4,12 +4,13 @@ use ieee.numeric_std.all;
 
 entity ULA is
     port(
-        a_in       : in  unsigned(15 downto 0);
-        b_in       : in  unsigned(15 downto 0);
-        operation  : in  unsigned(1 downto 0);
-        out_ula    : out unsigned(15 downto 0);
-        Flag_zero  : out std_logic;
-        Flag_Sinal : out std_logic        
+        a_in        : in  unsigned(15 downto 0);
+        b_in        : in  unsigned(15 downto 0);
+        operation   : in  unsigned(1 downto 0);
+        out_ula     : out unsigned(15 downto 0);
+        Flag_zero   : out std_logic;
+        Flag_Sinal  : out std_logic;
+        Flag_borrow : out std_logic       
     );
 end entity ULA;
 
@@ -29,7 +30,9 @@ architecture Behavioral of ULA is
         port(
             a_in   : in  unsigned(15 downto 0);
             b_in   : in  unsigned(15 downto 0);
-            out_sub: out unsigned(15 downto 0)
+            out_sub: out unsigned(15 downto 0);
+            borrow_in : in std_logic;
+            borrow_out : out std_logic
         );
     end component SUB;
 
@@ -50,12 +53,12 @@ architecture Behavioral of ULA is
 
     component MUX_Operation is
         port(
-            add_out    : in  unsigned(15 downto 0);
-            sub_out    : in  unsigned(15 downto 0);
-            xor_out    : in  unsigned(15 downto 0);
-            inv_out    : in  unsigned(15 downto 0);
-            sel        : in  unsigned(1 downto 0);
-            out_mux    : out unsigned(15 downto 0)
+            add_out     : in  unsigned(15 downto 0);
+            sub_out     : in  unsigned(15 downto 0);
+            xor_out     : in  unsigned(15 downto 0);
+            inv_out     : in  unsigned(15 downto 0);
+            sel         : in  unsigned(1 downto 0);
+            out_mux     : out unsigned(15 downto 0)
         );
     end component MUX_Operation;
     ---------------------------------------------------------------------------------------
@@ -85,7 +88,9 @@ begin
         port map (
             a_in    => unsigned(a_in),
             b_in    => unsigned(b_in),
-            out_sub => sub_out
+            out_sub => sub_out,
+            borrow_in => '0',
+            borrow_out => Flag_borrow
         );
 
     MODULO_XOR_inst : Modulo_XOR

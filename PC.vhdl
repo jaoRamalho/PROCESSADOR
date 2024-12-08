@@ -22,19 +22,17 @@ begin
             if reset = '1' then
                 pc_reg <= (others => '0');
             elsif pc_increment = '1' then
-                if pc_source_select = "01" then
-                    pc_reg <= pc_in; -- Salta para o endereço especificado
-                elsif pc_source_select = "10" then
-                    pc_reg <= pc_reg + pc_in; -- Salta para o endereço relativo
-                elsif pc_source_select = "11" then
-                    pc_reg <= pc_reg - pc_in; -- Salta para o endereço relativo
+                if pc_reg = "1111111" then
+                    pc_reg <= (others => '0');
                 else
-                    if pc_reg = "1111111" then
-                        pc_reg <= (others => '0');
-                    else
-                        pc_reg <= pc_reg + 1;
-                    end if;
+                    pc_reg <= pc_reg + 1;
                 end if;
+            elsif pc_source_select = "01" then
+                pc_reg <= pc_in; -- Salta para o endereço especificado
+            elsif pc_source_select = "10" then
+                pc_reg <= pc_reg + pc_in; -- Salta para o endereço relativo
+            elsif pc_source_select = "11" then
+                pc_reg <= pc_reg - pc_in; -- Salta para o endereço relativo
             end if;
         end if;
     end process;
