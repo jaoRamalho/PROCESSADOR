@@ -1,8 +1,11 @@
 # Esclarecimentos
 
-Nas pasta build tem um arquivo chamado "formas_de_onda.gkw" nele estão as formas de onda do lab5.
+Junto com esse readme tem um arquivo chamado "formas_de_onda.gkw" nele estão as formas de onda do lab6.
 
 O top_level é o "processador.vhdl".
+
+# OBBS:
+Estou utilizando o README do laboratório anterior; contudo, existem alterações que ainda não foram documentadas. Portanto, a explicação do protocolo pode diferir um pouco da versão atual. Apesar disso, continua sendo uma boa referência.
 
 # Protocolo de Instruções
 
