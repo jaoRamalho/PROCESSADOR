@@ -29,7 +29,7 @@ begin
     -- Geração de Clock
     clk_process : process
     begin
-        while now < 2000 ns loop
+        while now < 200000 ns loop
             clk <= '0';
             wait for 10 ns;
             clk <= '1';

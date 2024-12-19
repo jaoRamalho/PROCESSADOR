@@ -108,6 +108,15 @@ architecture behavior of Processador is
         );
     end component;
 
+    component Mux_pc_in is
+        port(
+            jmp   : in  unsigned(6 downto 0);
+            b     : in  unsigned(6 downto 0);
+            sel   : in  std_logic;
+            out_mux : out unsigned(6 downto 0)
+        );
+    end component;
+
     component MUX_Constante is
         port(
             constante    : in  unsigned(15 downto 0);
@@ -151,6 +160,8 @@ architecture behavior of Processador is
     signal flag_zero                   : std_logic;
     signal flag_sinal                  : std_logic;
 
+    signal pc_in                       : unsigned(6 downto 0);
+
     signal register_file_data_in       : unsigned(15 downto 0);
 
 begin
@@ -161,8 +172,16 @@ begin
         reset            => rst,
         pc_increment     => pc_increment,
         pc_source_select => pc_source_select,
-        pc_in            => rom_data(9 downto 3),
+        pc_in            => pc_in,
         pc_out           => pc_output
+    );
+
+    mux_pc : Mux_pc_in  
+    port map(
+        jmp     => rom_data(9 downto 3),
+        b       => rom_data(6 downto 0),
+        sel     => pc_source_select(1),
+        out_mux => pc_in
     );
 
     instruction_memory : ROM
@@ -193,7 +212,7 @@ begin
 
     register_file_mux : MUX_registerFile
     port map(
-        data_rom  => "000000000000" & rom_data(6 downto 3),
+        data_rom  => "000000" & rom_data(9 downto 0),
         data_ula  => alu_output,
         sel       => register_file_mux_select,
         out_mux   => register_file_data_in
@@ -239,7 +258,7 @@ begin
 
     constant_mux : MUX_Constante
     port map(
-        constante    => "000000000000" & rom_data(6 downto 3),
+        constante    => "000000000" & rom_data(6 downto 0),
         out_register => register_file_output1,
         sel          => mux_constant_addi_select,
         out_mux      => register_output

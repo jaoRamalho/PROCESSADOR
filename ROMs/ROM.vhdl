@@ -46,31 +46,15 @@ architecture a_ROM of ROM is
       -- Programa que realiza a soma de dois números
       -- Posição => Instrução (Opcode & Operandos)
 
-      -- Instrução 0: ADDI reg0, 1
-      0 => B"0000_0000000000000", -- faz nada - nop
-      1 => B"1101_011_0000101_010", -- coloca 5 no registrador 3 - li r3, 5
-      2 => B"1101_100_0001000_010", -- coloca 8 no registrador 4 - li r4, 8
-      3 => B"0011_100_011_101_0001", -- soma os valores dos registradores 4 e 3 e coloca no registrador 5 - add r5, r4, r3
-      4 => B"0111_101_101_0001_010", -- subtrai 1 do valor do registrador 5 e coloca no registrador 5 - 
-      5 => B"1110_0000010100_000", -- -- salta para o endereco 20   
-      6 => B"1101_011_0000000_010", -- coloca 0 no registrador 3
-      7 => B"0000_0000000000000", -- faz nada
-      8 => B"0000_0000000000000", -- faz nada
-      9 => B"0000_0000000000000", -- faz nada
-      10 => B"0000_0000000000000", -- faz nada
-      11 => B"0000_0000000000000", -- faz nada
-      12 => B"0000_0000000000000", -- faz nada
-      13 => B"0000_0000000000000", -- faz nada
-      14 => B"0000_0000000000000", -- faz nada
-      15 => B"0000_0000000000000", -- faz nada
-      16 => B"0000_0000000000000", -- faz nada
-      17 => B"0000_0000000000000", -- faz nada
-      18 => B"0000_0000000000000", -- faz nada
-      19 => B"0000_0000000000000", -- faz nada
-      20 => B"0011_000_101_011_0001", -- soma os valores dos registradores 0 e 3 e coloca no registrador 5
-      21 => B"1110_0000000011_000", -- -- salta para o endereco 3
-      22 => B"1101_011_0000000_010", -- co
-      -- Instruções adicionais podem ser adicionadas conforme necessário
+      0 => B"0000_0000000000000",
+      1 => B"1101_001_0000011110",
+      2 => B"1101_011_0000000000",
+      3 => B"1101_100_0000000000",
+      4 => B"0011_100_011_100_0001",
+      5 => B"1011_011_011_0000001",
+      6 => B"1001_011_001_0000011",
+      7 => B"1101_101_0000000000",
+      8 => B"0011_100_101_101_0000",
       others => (others => '0')
    );
 
