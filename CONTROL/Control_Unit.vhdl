@@ -24,9 +24,7 @@ entity Control_Unit is
         register_file_mux_select    : out std_logic;
         register_address_mux_select : out std_logic;
         pc_source_select            : out unsigned(1 downto 0);
-        update_flags                : out std_logic;
-        ram_write_enable            : out std_logic;
-        ram_mux_data                : out std_logic;
+        update_flags                : out std_logic
     );
 end entity Control_Unit;
 
@@ -105,8 +103,5 @@ begin
         (others => '0');
 
     update_flags <= '1' when (opcode = ADD or opcode = SUB or opcode = ADDI or opcode = SUBI or opcode = BGT) else '0';
-
-    ram_write_enable <= '1' when ((opcode = STORE or opcode = STORE_RG) and state = "01") else '0';
-    ram_mux_data <= '0' when (opcode = STORE_RG and state = "01") else '1';
 
 end architecture Behavioral;
