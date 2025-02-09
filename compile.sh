@@ -30,6 +30,10 @@ for file in CONTROL/*.vhdl; do
     ghdl -a --std=08 --workdir=build "$file"
 done
 
+for file in RAMs/*.vhdl; do
+    ghdl -a --std=08 --workdir=build "$file"
+done
+
 # Analisar os demais arquivos VHDL
 ghdl -a --std=08 --workdir=build Processador.vhdl
 ghdl -a --std=08 --workdir=build Processador_Testbench.vhdl

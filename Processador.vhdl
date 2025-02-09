@@ -22,11 +22,22 @@ architecture behavior of Processador is
         );
     end component;
 
+    component RAM is
+        port (
+            clk      : in std_logic;
+            endereco : in unsigned(6 downto 0);
+            wr_en    : in std_logic;
+            dado_in  : in unsigned(15 downto 0);
+            dado_out : out unsigned(15 downto 0) 
+        );
+    end component;
+
     component MUX_acc is
         port(
             out_acc      : in  unsigned(15 downto 0);
-            out_register : in  unsigned(15 downto 0);  
-            sel          : in  std_logic;
+            out_register : in  unsigned(15 downto 0); 
+            out_constant : in  unsigned(15 downto 0); 
+            sel          : in  unsigned (1 downto 0);
             out_mux      : out unsigned(15 downto 0)
         );
     end component;
@@ -71,7 +82,8 @@ architecture behavior of Processador is
         port(
             data_rom : in  unsigned(15 downto 0);
             data_ula : in  unsigned(15 downto 0);  
-            sel       : in  std_logic;
+            data_ram : in  unsigned(15 downto 0);
+            sel       : in  unsigned(1 downto 0);
             out_mux   : out unsigned(15 downto 0)
         );
     end component;
@@ -91,12 +103,13 @@ architecture behavior of Processador is
             write_instruction_register  : out std_logic;
             mux_constant_addi_select    : out std_logic;
             alu_operation               : out unsigned(1 downto 0);
-            mux_accumulator_select      : out std_logic;
+            mux_accumulator_select      : out unsigned(1 downto 0);
             accumulator_write_enable    : out std_logic;
-            register_file_mux_select    : out std_logic;
+            register_file_mux_select    : out unsigned(1 downto 0);
             register_address_mux_select : out std_logic;
             pc_source_select            : out unsigned(1 downto 0);
-            update_flags                : out std_logic
+            update_flags                : out std_logic;
+            write_ram                   : out std_logic
         );
     end component;
 
@@ -144,7 +157,7 @@ architecture behavior of Processador is
     signal write_instruction_register  : std_logic;
     signal pc_output                   : unsigned(6 downto 0);
     signal mux_constant_addi_select    : std_logic;
-    signal mux_accumulator_select      : std_logic := '0';
+    signal mux_accumulator_select      : unsigned(1 downto 0);
     signal alu_operation               : unsigned(1 downto 0);
     signal register_output             : unsigned(15 downto 0);
     signal register_file_output1       : unsigned(15 downto 0);
@@ -154,11 +167,13 @@ architecture behavior of Processador is
     signal rom_data                    : unsigned(16 downto 0);
     signal mux_output                  : unsigned(15 downto 0);
     signal accumulator_write_enable    : std_logic;
-    signal register_file_mux_select    : std_logic;
+    signal register_file_mux_select    : unsigned(1 downto 0);
     signal register_address            : unsigned(2 downto 0);
     signal register_address_mux_select : std_logic;
     signal pc_source_select            : unsigned(1 downto 0);
     signal update_flags                : std_logic;
+    signal write_ram                   : std_logic;
+    signal ram_data                    : unsigned(15 downto 0);
     
     signal flag_borrow                 : std_logic;
     signal flag_zero                   : std_logic;
@@ -168,7 +183,12 @@ architecture behavior of Processador is
 
     signal register_file_data_in       : unsigned(15 downto 0);
 
+    signal data_rom_condicional        : unsigned(15 downto 0);
+    signal data_const_condicional       : unsigned(15 downto 0);
+
 begin
+    data_rom_condicional <= ("111111" & rom_data(9 downto 0)) when rom_data(9) = '1' else ("000000" & rom_data(9 downto 0));
+    data_const_condicional <= ("111111111" & rom_data(6 downto 0)) when rom_data(6) = '1' else ("000000000" & rom_data(6 downto 0));
 
     program_counter : PC
     port map(
@@ -178,6 +198,15 @@ begin
         pc_source_select => pc_source_select,
         pc_in            => pc_in,
         pc_out           => pc_output
+    );
+
+    ram_a : RAM
+    port map(
+        clk      => clk,
+        endereco => alu_output(6 downto 0),
+        wr_en    => write_ram,
+        dado_in  => register_file_output2,
+        dado_out => ram_data
     );
 
     mux_pc : Mux_pc_in  
@@ -212,13 +241,15 @@ begin
         Flag_zero                   => flag_zero,
         Flag_sinal                  => flag_sinal,
         Flag_borrow                 => flag_borrow,
-        update_flags                => update_flags
+        update_flags                => update_flags,
+        write_ram                   => write_ram
     );
 
     register_file_mux : MUX_registerFile
     port map(
-        data_rom  => "000000" & rom_data(9 downto 0),
+        data_rom  => data_rom_condicional,
         data_ula  => alu_output,
+        data_ram  => ram_data,
         sel       => register_file_mux_select,
         out_mux   => register_file_data_in
     );
@@ -257,13 +288,14 @@ begin
     port map(
         out_acc      => accumulator_output,
         out_register => register_file_output2,
+        out_constant => data_const_condicional,
         sel          => mux_accumulator_select,
         out_mux      => mux_output
     );
 
     constant_mux : MUX_Constante
     port map(
-        constante    => "000000000" & rom_data(6 downto 0),
+        constante    => data_const_condicional,
         out_register => register_file_output1,
         sel          => mux_constant_addi_select,
         out_mux      => register_output
