@@ -14,5 +14,5 @@ end entity MUX_ram;
 
 architecture Behavioral of MUX_ram is
 begin
-    out_mux <= data_rom when sel = '1' else data_rg;
+    out_mux <= data_rom when sel =  '1' else data_rg;
 end architecture Behavioral;

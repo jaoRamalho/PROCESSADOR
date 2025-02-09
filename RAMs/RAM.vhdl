@@ -20,7 +20,7 @@ begin
    begin
       if rising_edge(clk) then
          if wr_en='1' then
-            conteudo_RAM(to_integer(endereco)) <= dado_in;
+            conteudo_RAM(to_integer(endereco))  <= dado_in;
          end if;
       end if;
    end process;
