@@ -22,7 +22,7 @@ entity Control_Unit is
         mux_accumulator_select      : out unsigned(1 downto 0);
         accumulator_write_enable    : out std_logic;
         register_file_mux_select    : out unsigned(1 downto 0);
-        register_address_mux_select : out std_logic;
+        register_address_mux_select : out unsigned(1 downto 0);
         pc_source_select            : out unsigned(1 downto 0);
         update_flags                : out std_logic;
         write_ram                   : out std_logic
@@ -92,10 +92,13 @@ begin
                                 "11";
                                 
                                 
-    write_instruction_register <= '1' when (state = "01" and (opcode = WRI or opcode = ADD or opcode = SUBI or opcode = ADDI or opcode = SUB)) else '0';
+    write_instruction_register <= '1' when (state = "01" and (opcode = WRI or opcode = ADD or opcode = SUBI or opcode = ADDI or opcode = SUB or opcode = LW)) else '0';
     
     accumulator_write_enable <= '1' when (opcode = LDA and state = "01") else '0';
-    register_address_mux_select <= '1' when (state = "01" and opcode = ADD) else '0';
+    
+    register_address_mux_select <= "01" when (state = "01" and opcode = ADD) else 
+                                   "10" when (state = "01" and opcode = LW) else
+                                   "00";
     
     mux_accumulator_select <= "00" when ((opcode = ADD or opcode = WRI or opcode = ADDI or opcode = SUBI or opcode = SUB or opcode = BGT) and state = "01") else 
                               "10" when (opcode = SW and state = "01") else

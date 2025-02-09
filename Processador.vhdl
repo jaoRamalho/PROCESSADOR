@@ -106,7 +106,7 @@ architecture behavior of Processador is
             mux_accumulator_select      : out unsigned(1 downto 0);
             accumulator_write_enable    : out std_logic;
             register_file_mux_select    : out unsigned(1 downto 0);
-            register_address_mux_select : out std_logic;
+            register_address_mux_select : out unsigned(1 downto 0);
             pc_source_select            : out unsigned(1 downto 0);
             update_flags                : out std_logic;
             write_ram                   : out std_logic
@@ -145,8 +145,9 @@ architecture behavior of Processador is
     component MUX_reg_add is
         port(
             data_default   : in  unsigned(2 downto 0);
-            data_operation : in  unsigned(2 downto 0);  
-            sel            : in  std_logic;
+            data_operation : in  unsigned(2 downto 0);
+            address_ram     : in  unsigned(2 downto 0);  
+            sel            : in  unsigned(1 downto 0);
             out_mux        : out unsigned(2 downto 0)
         );
     end component;
@@ -169,7 +170,7 @@ architecture behavior of Processador is
     signal accumulator_write_enable    : std_logic;
     signal register_file_mux_select    : unsigned(1 downto 0);
     signal register_address            : unsigned(2 downto 0);
-    signal register_address_mux_select : std_logic;
+    signal register_address_mux_select : unsigned(1 downto 0);
     signal pc_source_select            : unsigned(1 downto 0);
     signal update_flags                : std_logic;
     signal write_ram                   : std_logic;
@@ -258,6 +259,7 @@ begin
     port map(
         data_default   => rom_data(12 downto 10),
         data_operation => rom_data(6 downto 4),
+        address_ram     => rom_data(9 downto 7),
         sel            => register_address_mux_select,
         out_mux        => register_address
     );

@@ -63,6 +63,9 @@ architecture a_ROM of ROM is
       31 => B"1111_110_101_0000000", --
 
 
+      32 => B"1100_110_010_0000000", -- LW r2, 0(r1) (edereco de leitura e endereco de destino)
+      33 => B"1100_001_011_0000000",
+
       
       others => (others => '0')
    );
