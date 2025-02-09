@@ -29,10 +29,8 @@ begin
                 end if;
             elsif pc_source_select = "01" then
                 pc_reg <= pc_in; -- Salta para o endereço especificado
-            elsif pc_source_select = "10" then
-                pc_reg <= pc_reg + pc_in; -- Salta para o endereço relativo
-            elsif pc_source_select = "11" then
-                pc_reg <= pc_reg - pc_in; -- Salta para o endereço relativo
+            elsif pc_source_select = "10" or pc_source_select = "11" then
+                pc_reg <= unsigned(signed(pc_reg) + signed(pc_in)); -- Salta para o endereço especificado
             end if;
         end if;
     end process;

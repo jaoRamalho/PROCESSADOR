@@ -53,7 +53,9 @@ architecture behavior of Processador is
             out_ula    : out unsigned(15 downto 0);
             Flag_zero  : out std_logic;
             Flag_sinal : out std_logic;
-            Flag_borrow: out std_logic
+            Flag_borrow: out std_logic;
+            update_flags: in  std_logic;
+            clk        : in  std_logic
         );
     end component;
 
@@ -93,7 +95,8 @@ architecture behavior of Processador is
             accumulator_write_enable    : out std_logic;
             register_file_mux_select    : out std_logic;
             register_address_mux_select : out std_logic;
-            pc_source_select            : out unsigned(1 downto 0)
+            pc_source_select            : out unsigned(1 downto 0);
+            update_flags                : out std_logic
         );
     end component;
 
@@ -155,6 +158,7 @@ architecture behavior of Processador is
     signal register_address            : unsigned(2 downto 0);
     signal register_address_mux_select : std_logic;
     signal pc_source_select            : unsigned(1 downto 0);
+    signal update_flags                : std_logic;
     
     signal flag_borrow                 : std_logic;
     signal flag_zero                   : std_logic;
@@ -207,7 +211,8 @@ begin
         pc_source_select            => pc_source_select,
         Flag_zero                   => flag_zero,
         Flag_sinal                  => flag_sinal,
-        Flag_borrow                 => flag_borrow
+        Flag_borrow                 => flag_borrow,
+        update_flags                => update_flags
     );
 
     register_file_mux : MUX_registerFile
@@ -272,7 +277,9 @@ begin
         out_ula     => alu_output,
         Flag_zero   => flag_zero,
         Flag_sinal  => flag_sinal,
-        Flag_borrow => flag_borrow
+        Flag_borrow => flag_borrow,
+        clk         => clk,
+        update_flags => update_flags
     );
 
 end architecture behavior;

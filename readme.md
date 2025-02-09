@@ -29,9 +29,9 @@ As instruções do Tipo R realizam operações entre registradores. A estrutura 
 
 - `0011_100_011_101_0001` (ADD r5, r4, r3)
   - Opcode: `0011` (ADD)
-  - Rd: `100` (r5)
-  - Rs1: `011` (r4)
-  - Rs2: `101` (r3)
+  - Rd: `101` (r5)
+  - Rs1: `100` (r4)
+  - Rs2: `011` (r3)
   - Função: `0001`
 
 ### Tipo I (Immediate)
@@ -69,8 +69,6 @@ As instruções do Tipo J realizam saltos para um endereço específico. A estru
   - Endereço: `0000010100` (20)
 
 ## Exemplos de Instruções
-
-Vamos revisar as instruções definidas no seu arquivo `ROM.vhdl`:
 
 ```vhdl
 0 => B"0000_0000000000000", -- faz nada - nop

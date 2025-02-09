@@ -10,7 +10,9 @@ entity ULA is
         out_ula     : out unsigned(15 downto 0);
         Flag_zero   : out std_logic;
         Flag_Sinal  : out std_logic;
-        Flag_borrow : out std_logic       
+        Flag_borrow : out std_logic;
+        update_flags: in  std_logic;
+        clk         : in  std_logic  
     );
 end entity ULA;
 
@@ -71,6 +73,14 @@ architecture Behavioral of ULA is
     signal inv_out      : unsigned(15 downto 0);
     signal selected_out : unsigned(15 downto 0);
 
+    signal reg_flag_zero : std_logic := '0';
+    signal reg_flag_sinal: std_logic := '0';
+    signal reg_flag_borrow: std_logic := '0';
+
+    signal comb_flag_zero : std_logic;
+    signal comb_flag_sinal: std_logic;
+    signal comb_flag_borrow: std_logic;
+
     ---------------------------------------------------------------------------------------
     
 begin
@@ -90,7 +100,7 @@ begin
             b_in    => unsigned(b_in),
             out_sub => sub_out,
             borrow_in => '0',
-            borrow_out => Flag_borrow
+            borrow_out => comb_flag_borrow
         );
 
     MODULO_XOR_inst : Modulo_XOR
@@ -117,8 +127,23 @@ begin
         );
 
     -- Lógica de controle de flags
-    Flag_zero <= '1' when selected_out = "0000000000000000" else '0';
-    Flag_Sinal <= selected_out(15);
+    comb_flag_zero <= '1' when selected_out = "0000000000000000" else '0';
+    comb_flag_sinal <= selected_out(15);
+
+    process(clk)
+    begin
+        if falling_edge(clk) then
+            if update_flags = '1' then
+                reg_flag_zero <= comb_flag_zero;
+                reg_flag_sinal <= comb_flag_sinal;
+                reg_flag_borrow <= comb_flag_borrow;
+            end if;
+        end if;
+    end process;
+
+    Flag_zero   <= reg_flag_zero;
+    Flag_Sinal  <= reg_flag_sinal;
+    Flag_borrow <= reg_flag_borrow;
 
     out_ula <= selected_out;
 end architecture Behavioral;
