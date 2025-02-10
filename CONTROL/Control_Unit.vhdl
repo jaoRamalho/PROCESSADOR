@@ -82,12 +82,12 @@ begin
     pc_increment <= '1' when state = "00" else '0';
     
     pc_source_select <= "01" when (opcode = JMP and state = "01") else 
-    "11" when (opcode = BGT and state = "01" and Flag_zero = '0') else 
+    "11" when (opcode = BGT and state = "01" and Flag_zero = '0' and Flag_sinal = '0') else 
     "11" when (opcode = BVC and state = "01" and Flag_borrow = '0') else 
     "00";
     
     -- Lógica dos sinais de controle
-    register_file_mux_select <= "00" when (state = "01" and (opcode = LDA or opcode = ADD  or opcode = ADDI or opcode = SUBI or opcode = BGT or opcode = SUB )) else 
+    register_file_mux_select <= "00" when (state = "01" and (opcode = LDA or opcode = ADD  or opcode = ADDI or opcode = SUBI or opcode = BGT or opcode = SUB)) else 
                                 "10" when (state = "01" and opcode = LW) else
                                 "11";
                                 
@@ -96,7 +96,7 @@ begin
     
     accumulator_write_enable <= '1' when (opcode = LDA and state = "01") else '0';
     
-    register_address_mux_select <= "01" when (state = "01" and opcode = ADD) else 
+    register_address_mux_select <= "01" when (state = "01" and (opcode = ADD or opcode = SUB)) else 
                                    "10" when (state = "01" and opcode = LW) else
                                    "00";
     
