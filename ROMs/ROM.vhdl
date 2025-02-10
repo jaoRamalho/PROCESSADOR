@@ -48,7 +48,6 @@ architecture a_ROM of ROM is
       -- 1 => B"1101_010_0000000010", -- WRI r2, 0 (contador)
       -- 2 => B"0100_010_001_011_0000", -- SUB r3, r1, r2 (indexador)
 
-
       0  => B"1101_001_0000100000", -- WRI r1, 32 (limite superior)
       1  => B"1101_010_0000000000", -- WRI r2, 0 (contador)
       2  => B"1101_011_0000000000", -- WRI r3, 0 (indexador)
