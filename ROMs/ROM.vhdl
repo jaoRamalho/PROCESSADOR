@@ -43,14 +43,13 @@ architecture a_ROM of ROM is
 
    type mem is array (0 to 127) of unsigned(16 downto 0);
    constant conteudo_ROM : mem := (
-
       -- 0 => B"1101_001_0000100000", -- WRI r1, 32 (limite superior)
       -- 1 => B"1101_010_0000000010", -- WRI r2, 0 (contador)
       -- 2 => B"0100_010_001_011_0000", -- SUB r3, r1, r2 (indexador)
 
-      0  => B"1101_001_0000100000", -- WRI r1, 32 (limite superior)
-      1  => B"1101_010_0000000000", -- WRI r2, 0 (contador)
-      2  => B"1101_011_0000000000", -- WRI r3, 0 (indexador)
+      0  => B"1101_001_0000100001", -- WRI r1, 32 (limite superior)
+      1  => B"1101_010_0000000010", -- WRI r2, 2 (contador)
+      2  => B"1101_011_0000000010", -- WRI r3, 2 (indexador)
       
       -- Loop para preencher a RAM com números de 0 a 31
       3  => B"1111_010_010_0000000", -- SW r2, 0(r2) (escreve r2 na RAM no endereço r2)
@@ -69,7 +68,6 @@ architecture a_ROM of ROM is
       14  => B"1101_101_0000000000", -- WRI r5, 0 (zera r5)
       15  => B"1001_010_001_1111000", -- BGT r2, r1, -8 (volta para a instrução 4 se r2 <= r1)
 
-
       16 => B"1101_110_0000000000", -- WRI r6, 0 (zera contador)
       17 => B"1101_010_0000000010", -- WRI r2, 0 (zera index para percorrer memória)
       18 => B"1101_011_0000001001", -- WRI r3, 9 (enesimo primo a ser encontrado)
@@ -80,7 +78,6 @@ architecture a_ROM of ROM is
       22 => B"0111_110_110_0000001", -- SUB r6, r6, 1 (segue sem incrementar r6)
       23 => B"1011_010_010_0000001", -- ADDI r2, r2, 1 (incrementa endereço)
       24 => B"1001_110_011_1111010", -- BGT r2, r3, -6 (loop, ajustando offset)
-
 
       others => (others => '0')
    );
