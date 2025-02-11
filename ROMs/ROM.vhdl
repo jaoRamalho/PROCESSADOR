@@ -67,7 +67,20 @@ architecture a_ROM of ROM is
       12  => B"1011_010_010_0000001", -- ADDI r2, r2, 1 (incrementa r2)
       13  => B"1011_100_100_0000001", -- ADDI r4, r4, 1 (incrementa r4)
       14  => B"1101_101_0000000000", -- WRI r5, 0 (zera r5)
-      15  => B"1001_010_001_1111000", -- BGT r2, r1, -9 (volta para a instrução 4 se r2 <= r1)
+      15  => B"1001_010_001_1111000", -- BGT r2, r1, -8 (volta para a instrução 4 se r2 <= r1)
+
+
+      16 => B"1101_110_0000000000", -- WRI r6, 0 (zera contador)
+      17 => B"1101_010_0000000010", -- WRI r2, 0 (zera index para percorrer memória)
+      18 => B"1101_011_0000001001", -- WRI r3, 9 (enesimo primo a ser encontrado)
+
+      19 => B"1100_010_111_0000000", -- LW r7, 0(r2) (carrega conteúdo da RAM no endereço r2 para r7)
+      20 => B"1011_110_110_0000001", -- ADDI r6, r6, 1 (r7 não é zero, incrementa contador)
+      21 => B"1001_000_111_0000001", -- BGT r7, r0, +1  (se 7 <= 0, salta para instrução 21)
+      22 => B"0111_110_110_0000001", -- SUB r6, r6, 1 (segue sem incrementar r6)
+      23 => B"1011_010_010_0000001", -- ADDI r2, r2, 1 (incrementa endereço)
+      24 => B"1001_110_011_1111010", -- BGT r2, r3, -6 (loop, ajustando offset)
+
 
       others => (others => '0')
    );

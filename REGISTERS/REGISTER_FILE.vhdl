@@ -12,7 +12,8 @@ entity REGISTER_FILE is
         read_address2   : in  unsigned(2 downto 0);        -- Endereço do registrador 2
         data_in         : in  unsigned(15 downto 0);       -- Dados de entrada
         read_data1      : out unsigned(15 downto 0);        -- Dados de saída
-        read_data2      : out unsigned(15 downto 0)        -- Dados de saída 2
+        read_data2      : out unsigned(15 downto 0);        -- Dados de saída 2
+        debug           : out unsigned(15 downto 0)        -- Dados de saída para debug
     );
 end entity REGISTER_FILE;
 
@@ -39,5 +40,6 @@ begin
     
     read_data1 <= registers(to_integer(read_address1));
     read_data2 <= registers(to_integer(read_address2));
+    debug <= registers(7);
 
 end architecture Behavioral;

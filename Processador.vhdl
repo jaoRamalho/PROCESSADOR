@@ -5,7 +5,8 @@ use ieee.numeric_std.all;
 entity Processador is
     port(
         clk : in std_logic;  -- Clock
-        rst : in std_logic   -- Reset
+        rst : in std_logic;   -- Reset
+        debug : out unsigned(15 downto 0)
     );
 end Processador;
 
@@ -52,7 +53,8 @@ architecture behavior of Processador is
             read_address2   : in  unsigned(2 downto 0);
             data_in         : in  unsigned(15 downto 0);
             read_data1      : out unsigned(15 downto 0);
-            read_data2      : out unsigned(15 downto 0)
+            read_data2      : out unsigned(15 downto 0);
+            debug           : out unsigned(15 downto 0)
         );
     end component;
 
@@ -187,6 +189,9 @@ architecture behavior of Processador is
     signal data_rom_condicional        : unsigned(15 downto 0);
     signal data_const_condicional       : unsigned(15 downto 0);
 
+
+    signal debug_s : unsigned(15 downto 0);
+
 begin
     data_rom_condicional <= ("111111" & rom_data(9 downto 0)) when rom_data(9) = '1' else ("000000" & rom_data(9 downto 0));
     data_const_condicional <= ("111111111" & rom_data(6 downto 0)) when rom_data(6) = '1' else ("000000000" & rom_data(6 downto 0));
@@ -274,7 +279,8 @@ begin
         read_address2 => rom_data(9 downto 7),
         data_in       => register_file_data_in,
         read_data1    => register_file_output1,
-        read_data2    => register_file_output2
+        read_data2    => register_file_output2,
+        debug         => debug_s
     );
 
     acc : ACCUMULATOR
@@ -316,4 +322,5 @@ begin
         update_flags => update_flags
     );
 
+    debug <= debug_s;
 end architecture behavior;

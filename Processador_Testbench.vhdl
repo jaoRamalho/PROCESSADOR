@@ -11,19 +11,22 @@ architecture behavior of Processador_Testbench is
     component Processador is
         port(
             clk : in std_logic; -- Clock
-            rst : in std_logic -- rst
+            rst : in std_logic; -- rst
+            debug : out unsigned(15 downto 0) -- Dados de saída para debug
         );
     end component;
 
     -- Sinais para conectar ao UUT
     signal clk   : std_logic := '0';
     signal rst : std_logic := '0';
+    signal debug : unsigned(15 downto 0);
 begin
     -- Instantiate the Unit Under Test (UUT)
     pr : Processador
         port map(
             clk   => clk,
-            rst => rst
+            rst => rst,
+            debug => debug
         );
 
     -- Geração de Clock
@@ -37,6 +40,7 @@ begin
         end loop;
         wait;
     end process;
+
 
     -- Processo de Estímulo
     stim_proc: process
