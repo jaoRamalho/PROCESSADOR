@@ -54,10 +54,10 @@ architecture a_ROM of ROM is
       -- Loop para preencher a RAM com números de 0 a 31
       3  => B"1111_010_010_0000000", -- SW r2, 0(r2) (escreve r2 na RAM no endereço r2)
       4 => B"1011_010_010_0000001", -- ADDI r2, r2, 1
-      5 => B"0100_010_001_110_0000", -- SUB r7, r2, r1 (r7 = r2 - r1)
-      6 => B"1001_000000_1111011", -- BGT r7, r0, -2 (se r7 > 0, volta duas linhas, ou seja, pra linha 4)
+      5 => B"0100_010_001_110_0000", -- SUB r6, r2, r1 (r6 = r2 - r1)
+      6 => B"1001_000000_1111011", -- BGT -3 (se r6 > 0)
 
-      7 => B"1101_100_0000000010",   -- WRI r4, 0
+      7 => B"1101_100_0000000010",   -- WRI r4, 2
       8 => B"1101_010_0000000000", -- WRI r2, 0 (contador)
       
       9  => B"1100_100_101_0000000", -- LW r5, 0(r4) (carrega o valor a ser eliminado)
@@ -86,7 +86,6 @@ architecture a_ROM of ROM is
       29 => B"1011_010_010_0000001", -- ADDI r2, r2, 1 (incrementa endereço)
       30 => B"0100_110_011_100_0000", -- SUB r4, r2, r3 (r4 = r2 - r3)
       31 => B"1001_000000_1111000", -- BGT -8 (loop, ajustando offset)
-
 
       others => (others => '0')
    );
