@@ -75,14 +75,18 @@ architecture a_ROM of ROM is
       20 => B"1101_010_0000000010", -- WRI r2, 0 (zera index para percorrer memória)
       21 => B"1101_011_0000001000", -- WRI r3, 9 (enesimo primo a ser encontrado)
 
-      22 => B"1100_010_111_0000000", -- LW r7, 0(r2) (carrega conteúdo da RAM no endereço r2 para r7)
-      23 => B"1011_110_110_0000001", -- ADDI r6, r6, 1 (r7 não é zero, incrementa contador)
-      24 => B"0100_000_111_100_0000", -- SUB r3, r0, r7 (r7 = 0 - r7)
-      25 => B"1001_000000_0000001", -- BGT r7, r0, +1  (se 7 <= 0, salta para instrução 21)
-      26 => B"0111_110_110_0000001", -- SUB r6, r6, 1 (segue sem incrementar r6)
-      27 => B"1011_010_010_0000001", -- ADDI r2, r2, 1 (incrementa endereço)
-      28 => B"0100_110_011_100_0000", -- SUB r7, r2, r1 (r7 = r2 - r1)
-      29 => B"1001_000000_1111000", -- BGT r2, r3, -6 (loop, ajustando offset)
+      22 => B"0111_100_011_0001011", -- SUBI r4, r3, 11 (r4 = r3 - 11)
+      23 => B"1010_000000_0001111", -- BVC +15 (se r4 < 0,  pule tudo. Verificação para ver se foi calculado até tal primo)
+
+      24 => B"1100_010_111_0000000", -- LW r7, 0(r2) (carrega conteúdo da RAM no endereço r2 para r7)
+      25 => B"1011_110_110_0000001", -- ADDI r6, r6, 1 (incrementa 1 em r6)
+      26 => B"0100_000_111_100_0000", -- SUB r4, r0, r3 (r7 = 0 - r3)
+      27 => B"1001_000000_0000001", -- BGT +1  (se 7 <= 0, salta para instrução 21)
+      28 => B"0111_110_110_0000001", -- SUB r6, r6, 1 (decrementa 1 em r6)
+      29 => B"1011_010_010_0000001", -- ADDI r2, r2, 1 (incrementa endereço)
+      30 => B"0100_110_011_100_0000", -- SUB r4, r2, r3 (r4 = r2 - r3)
+      31 => B"1001_000000_1111000", -- BGT -8 (loop, ajustando offset)
+
 
       others => (others => '0')
    );
