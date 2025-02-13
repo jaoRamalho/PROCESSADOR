@@ -1,11 +1,17 @@
+# VALIDAÇÃO
+
+RECOMENDO VER A ROM DE PRIMEIRA, LÁ TEM OS COMENTARIOS DO ALGORITIMO EM ASSEMBLY. NA AULA EXPLICO MINHA LÓGICA.
+
 # Esclarecimentos
 
-Junto com esse readme tem um arquivo chamado "formas_de_onda.gkw" nele estão as formas de onda do lab6.
+Junto com esse readme tem um arquivo chamado "crivo.gkw" nele estão as formas de onda da validação.
 
 O top_level é o "processador.vhdl".
 
+
 # OBBS:
 Estou utilizando o README do laboratório anterior; contudo, existem alterações que ainda não foram documentadas. Portanto, a explicação do protocolo pode diferir um pouco da versão atual. Apesar disso, continua sendo uma boa referência.
+
 
 # Protocolo de Instruções
 
