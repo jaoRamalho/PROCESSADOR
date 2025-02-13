@@ -87,7 +87,7 @@ begin
     "00";
     
     -- Lógica dos sinais de controle
-    register_file_mux_select <= "00" when (state = "01" and (opcode = LDA or opcode = ADD  or opcode = ADDI or opcode = SUBI or opcode = BGT or opcode = SUB)) else 
+    register_file_mux_select <= "00" when (state = "01" and (opcode = LDA or opcode = ADD  or opcode = ADDI or opcode = SUBI or opcode = SUB)) else 
                                 "10" when (state = "01" and opcode = LW) else
                                 "11";
                                 
@@ -100,7 +100,7 @@ begin
                                    "10" when (state = "01" and opcode = LW) else
                                    "00";
     
-    mux_accumulator_select <= "00" when ((opcode = ADD or opcode = WRI or opcode = ADDI or opcode = SUBI or opcode = SUB or opcode = BGT) and state = "01") else 
+    mux_accumulator_select <= "00" when ((opcode = ADD or opcode = WRI or opcode = ADDI or opcode = SUBI or opcode = SUB) and state = "01") else 
                               "10" when (opcode = SW and state = "01") else
                               "01";
     -- Seleção do mux constante/addi (comentado caso não seja usado)
@@ -109,11 +109,11 @@ begin
     -- Operação da ULA
     alu_operation <=
         "00" when ((opcode = ADD or opcode = ADDI or opcode = SW) and state = "01") else
-        "01" when (((opcode = SUB or opcode = SUBI or opcode = BGT) and state = "01")) else
+        "01" when (((opcode = SUB or opcode = SUBI) and state = "01")) else
         "10" when (opcode = OP_XOR and state = "01") else
         "11" when (opcode = INV and state = "01") else
         (others => '0');
 
-    update_flags <= '1' when (opcode = ADD or opcode = SUB or opcode = ADDI or opcode = SUBI or opcode = BGT) else '0';
+    update_flags <= '1' when (opcode = ADD or opcode = SUB or opcode = ADDI or opcode = SUBI) else '0';
 
 end architecture Behavioral;
